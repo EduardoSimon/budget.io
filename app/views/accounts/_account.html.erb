@@ -1,0 +1,13 @@
+<div id="<%= dom_id account %>">
+  <p>
+    <strong>Name:</strong>
+    <%= account.name %>
+  </p>
+
+  <p>
+    <strong>Iban:</strong>
+    <%= account.iban %>
+  </p>
+
+  <%= button_to "Authenticate", account_authenticate_path(account) %>
+</div>
