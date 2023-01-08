@@ -1,2 +1,14 @@
 class Movement < ApplicationRecord
+  belongs_to :account
+  belongs_to :category, optional: true
+  validates :payer, presence: true
+  validates :amount, presence: true, numericality: true
+
+  def credit?
+    amount < 0.0
+  end
+
+  def debit?
+    amount >= 0.0
+  end
 end

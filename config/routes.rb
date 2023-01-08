@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
-  resources :budgets
-  resources :accounts do
-    post "authenticate", to: "accounts#authenticate", action: :authenticate
+  resources :budgets do
+    resources :categories
   end
-  resources :movements
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  resources :accounts do
+    post "sync", to: "accounts#sync"
+
+    resources :movements
+    resources :auth_sessions, only: [:create] do
+      get "result", to: "auth_sessions#result"
+    end
+  end
 end

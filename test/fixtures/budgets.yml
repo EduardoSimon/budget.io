@@ -1,7 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  title: MyString
+with_categories:
+  title: My budget
 
-two:
-  title: MyString
+empty:
+  title: Empty budget

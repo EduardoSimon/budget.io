@@ -3,6 +3,8 @@ require "test_helper"
 class AccountsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account = accounts(:one)
+    @budget = budgets(:empty)
+    @institution = institutions(:revolut)
   end
 
   test "should get index" do
@@ -17,7 +19,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create account" do
     assert_difference("Account.count") do
-      post accounts_url, params: {account: {iban: @account.iban, name: @account.name}}
+      post accounts_url, params: {account: {name: @account.name, institution_id: @institution.id, budget_id: @budget.id}}
     end
 
     assert_redirected_to account_url(Account.last)
@@ -34,7 +36,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update account" do
-    patch account_url(@account), params: {account: {iban: @account.iban, name: @account.name}}
+    resopnse = patch account_url(@account), params: {account: {iban: @account.iban, name: @account.name}}
     assert_redirected_to account_url(@account)
   end
 

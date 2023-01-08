@@ -36,3 +36,25 @@ Use a ruby dependency manager like rbenv or asdf. The supported ruby version is 
 * Deployment instructions
 
 * ...
+
+
+
+# Domain
+
+✅ A `budget` is a collection of `categories`.
+✅ A `category` has a name and an `allocated_amount` per month. 
+✅ A `target amount` is the desired allocated amount for a given `category`
+A `category` can be:
+- `overspent` when the sum of movements is greater than the `allocated_amount`
+- `underfunded` when the `allocated_amount` is smaller than the `target amount`
+- `funded` when the `allocated_amount` is equal or greater than the `target_amount` and the sum of movements is fewer tham the `allocated_amount`
+
+
+The `allocated_amount` of a category is depleted by each `movement`.
+A `movement` belongs to an account. It can be a `credit` or a `debit`.
+✅ A `credit` is a money movement flowing out of your account.
+✅ A `debit` is a money movement flowing into your account.
+✅ A `movement` has a `payer`.
+✅ A `movement` can be assigned to a `category`
+Every unassigned movement will be considered `Ready to asign` funds, i.e funds to be added to the budget.
+

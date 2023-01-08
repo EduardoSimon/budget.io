@@ -6,4 +6,6 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-Movement.create(amount_in_cents: 10000, reconciled: false)
+budget = Budget.create!(title: "Test budget")
+account = Account.create!(name: "Test account", institution: Institution.first, budget: budget)
+category = Category.create!(name: "groceries", assigned_amount: "20.00", budget: budget)

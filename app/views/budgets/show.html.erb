@@ -1,6 +1,9 @@
 <p style="color: green"><%= notice %></p>
 
 <%= render @budget %>
+  <% @budget.categories.each do |category| %>
+    <%= render category %>
+  <% end %>
 
 <div>
   <%= link_to "Edit this budget", edit_budget_path(@budget) %> |

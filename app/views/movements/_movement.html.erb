@@ -1,0 +1,16 @@
+<div id="<%= dom_id movement %>">
+  <section style="display: flex; align-items: center; gap: 0 8px; margin: 0">
+    <span> <%= movement.debit? ? "➡️" : "⬅️" %> </span>
+    <p>
+      <span style="white-space: nowrap"> <%= movement.description %> </span>
+    </p>
+    <span><%= number_to_currency(movement.amount, :unit => "€") %></span>
+    <div>
+      <strong>Category:</strong>
+      <%= form_for [@account, movement] do |f| %>
+        <%= f.collection_select(:category_id, Category.all, :id, :name, prompt: true) %>
+        <%= f.submit %>
+      <% end %>
+    </p>
+  </section>
+</div>

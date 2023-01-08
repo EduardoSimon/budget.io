@@ -9,6 +9,9 @@ gem "rails", "~> 7.0.4"
 # Loads automatically .env files
 gem "dotenv-rails", groups: [:development, :test]
 
+# Allow whitelisting other domains when redirecting
+gem 'rack-cors'
+
 # Linter
 gem "standard", group: [:development, :test]
 

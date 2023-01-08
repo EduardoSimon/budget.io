@@ -10,6 +10,11 @@ class BudgetsTest < ApplicationSystemTestCase
     assert_selector "h1", text: "Budgets"
   end
 
+  test "showing a budget" do
+    visit budget_url(@budget)
+    assert_selector "p", text: @budget.title
+  end
+
   test "should create budget" do
     visit budgets_url
     click_on "New budget"

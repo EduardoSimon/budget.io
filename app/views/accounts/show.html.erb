@@ -1,10 +1,12 @@
-<p style="color: green"><%= notice %></p>
-
+<h1>Bank Account</h2>
 <%= render @account %>
-
+<p style="color: green"><%= notice %></p>
+<h1>Movements</h2>
+<% @account.movements.first(10).each do |movement| %>
+  <%= render movement, locals: { account: @account} %>
+<% end %>
 <div>
   <%= link_to "Edit this account", edit_account_path(@account) %> |
   <%= link_to "Back to accounts", accounts_path %>
-
   <%= button_to "Destroy this account", @account, method: :delete %>
 </div>

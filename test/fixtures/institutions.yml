@@ -4,8 +4,13 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
+revolut:
+  name: "Revolut Bank"
+  thumbnail_url: "https://www.google.com"
+  institution_id: "REVOLUT_BANK_1"
 #
-two: {}
+santander:
+  name: "Santander Bank"
+  thumbnail_url: "https://www.google.com?q=santander"
+  institution_id: "SANTANDER_BANK_2"
 # column: value

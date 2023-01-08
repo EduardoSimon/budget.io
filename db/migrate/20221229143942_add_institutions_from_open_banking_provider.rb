@@ -1,6 +1,6 @@
 class AddInstitutionsFromOpenBankingProvider < ActiveRecord::Migration[7.0]
   def up
-    institutions = OpenBankingConnector.fetch_institutions_by_country("ES")
+    institutions = OpenBankingConnector.new.fetch_institutions_by_country("ES")
 
     institutions.each do |institution|
       Institution.create!(

@@ -2,7 +2,7 @@ require "test_helper"
 
 class BudgetsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @budget = budgets(:one)
+    @budget = budgets(:empty)
   end
 
   test "should get index" do
@@ -23,7 +23,7 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to budget_url(Budget.last)
   end
 
-  test "should show budget" do
+  test "should show budget with its categories" do
     get budget_url(@budget)
     assert_response :success
   end

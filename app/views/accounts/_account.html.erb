@@ -5,9 +5,19 @@
   </p>
 
   <p>
-    <strong>Iban:</strong>
-    <%= account.iban %>
+    <strong>Balance:</strong>
+    <%= account.balance %>
   </p>
 
-  <%= button_to "Authenticate", account_authenticate_path(account) %>
+  </p>
+    <strong>Intitution:</strong>
+    <%= account.institution.name %>
+    <%= image_tag(account.institution.thumbnail_url, class: "account_thumbnail") %>
+  </p>
+
+  <% if !account.authenticated? %>
+   <%= button_to "Authenticate", account_auth_sessions_path(account), data: { turbo: false } %>
+  <% else %>
+   <%= button_to "Sync movements", account_sync_path(account) %>
+  <% end %>
 </div>

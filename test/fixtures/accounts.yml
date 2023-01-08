@@ -3,7 +3,11 @@
 one:
   name: MyString
   iban: MyString
+  institution: revolut
+  budget: empty
 
 two:
   name: MyString
   iban: MyString
+  institution: santander
+  budget: empty

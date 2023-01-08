@@ -1,0 +1,22 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+in_progress:
+  external_id: "bb3398ba-aeb2-494b-bffb-7df3dc937b6d"
+  raw_response: "{}"
+  status: "in_progress"
+  account: one
+  external_institution_id: revolut_id
+
+success:
+  external_id: "bb3398ba-aeb2-494b-bffb-7df3dc937b6d"
+  raw_response: "{}"
+  status: "success"
+  account: two
+  external_institution_id: revolut_id
+
+failed:
+  external_id: "bb3398ba-aeb2-494b-bffb-7df3dc937b6d"
+  raw_response: "{}"
+  status: "failed"
+  account: one
+  external_institution_id: revolut_id

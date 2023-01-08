@@ -19,16 +19,17 @@ class AccountsController < ApplicationController
   def edit
   end
 
-  def authenticate
-    account = Account.find(params[:account_id])
-    pp account_url(account)
-    # OpenBankingConnector.init_auth_session(
-    #   institution_id: @account.institution.institution_id,
-    #   internal_user_id: SecureRandom.uuid,
-    #   redirect_url: request.base_url
+  def sync
+    PullAccountMovementsJob.perform_later(account_id: params[:account_id])
+  end
 
-    # )
-    render json: {}, status: :ok
+  def authentication_result
+    reference = params[:ref]
+
+    # Add the authenticated check to the account
+    # Add a common REF for all of the accounts
+    # Associate the account_id coming as part of the response to the account itself
+    # Use that account_id to fetch the rest of the details and save them
   end
 
   # POST /accounts or /accounts.json
@@ -78,6 +79,6 @@ class AccountsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def account_params
-    params.require(:account).permit(:name, :institution_id)
+    params.require(:account).permit(:name, :institution_id, :budget_id)
   end
 end

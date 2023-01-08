@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+funded:
+  name: groceries
+  assigned_amount: 20.00
+  target_amount: 20.00
+  budget: with_categories
+
+two:
+  name: MyString
+  assigned_amount: 9.99
+  target_amount: 9.99
+  budget: with_categories
