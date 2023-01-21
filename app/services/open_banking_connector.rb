@@ -70,7 +70,7 @@ class OpenBankingConnector
   def client
     ::Nordigen::NordigenClient.new(
       secret_id: ENV.fetch("OB_CLIENT_ID"),
-      secret_key: ENV.fetch("OB_SECRET_KEY")
+      secret_key: ENV.fetch("OB_CLIENT_SECRET")
     )
   end
 end
