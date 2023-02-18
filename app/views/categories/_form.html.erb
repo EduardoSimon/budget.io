@@ -1,0 +1,24 @@
+<%= form_for [budget, category] do |f|%>
+  <% if category.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(category.errors.count, "error") %> prohibited this category from being saved:</h2>
+      <ul>
+        <% category.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div>
+    <%= f.label :name, style: "display: block" %>
+    <%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :target_amount, style: "display: block" %>
+    <%= f.number_field :target_amount, in: 0.0..2000.0, step: 0.5  %>
+  </div>
+  <%= f.hidden_field :budget_id, value: budget.id%>
+  <div>
+    <%= f.submit %>
+  </div>
+<% end%>

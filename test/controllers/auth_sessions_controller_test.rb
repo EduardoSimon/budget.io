@@ -1,16 +1,7 @@
 require "test_helper"
+require "test_helpers/mock_client"
 
 class AuthSessionsControllerTest < ActionDispatch::IntegrationTest
-  class MockClient
-    def init_auth_session(institution_id:, internal_user_id:, redirect_url:)
-      OpenBankingConnector::AuthSession.new(url: "url1", id: "id")
-    end
-
-    def fetch_session_result(id)
-      OpenBankingConnector::AuthSession.new(url: "url1", id: "id", accounts: ["account1"])
-    end
-  end
-
   def setup
     @account = accounts(:one)
     @auth_session = auth_sessions(:in_progress)

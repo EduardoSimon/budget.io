@@ -10,4 +10,4 @@ two:
   name: MyString
   iban: MyString
   institution: santander
-  budget: empty
+  budget: with_categories

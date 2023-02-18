@@ -19,7 +19,7 @@ class PullAccountMovementsJob < ApplicationJob
 
       if !movement
         Movement.create!(
-          budget: account.budget,
+          account: account,
           description: t[:description],
           payer: t[:payer] || "wadus",
           amount: t[:amount],

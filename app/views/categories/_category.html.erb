@@ -3,12 +3,11 @@
     <strong>Name:</strong>
     <%= category.name %>
   </p>
-
   <p>
     <strong>Assigned amount:</strong>
     <%= category.assigned_amount %>
     <strong>Target amount:</strong>
     <%= category.target_amount %>
-  <p>
-
-</div>
+    <p>
+      <%= link_to "Edit this category", edit_budget_category_path(@budget,category) %>
+    </div>

@@ -1,13 +1,11 @@
 <p style="color: green"><%= notice %></p>
-
 <%= render @budget %>
-  <% @budget.categories.each do |category| %>
-    <%= render category %>
-  <% end %>
-
+<% @budget.categories.each do |category| %>
+  <%= render category %>
+<% end %>
 <div>
+  <%= link_to "Create categories", new_budget_category_path(@budget) %> |
   <%= link_to "Edit this budget", edit_budget_path(@budget) %> |
   <%= link_to "Back to budgets", budgets_path %>
-
   <%= button_to "Destroy this budget", @budget, method: :delete %>
 </div>

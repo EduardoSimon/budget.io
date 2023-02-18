@@ -40,4 +40,8 @@ class AccountsTest < ApplicationSystemTestCase
 
     assert_text "Account was successfully destroyed"
   end
+
+  test "should update the category of a movement" do
+    visit account_url(@account)
+  end
 end
