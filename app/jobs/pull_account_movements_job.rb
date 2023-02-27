@@ -21,7 +21,7 @@ class PullAccountMovementsJob < ApplicationJob
         Movement.create!(
           account: account,
           description: t[:description],
-          payer: t[:payer] || "wadus",
+          payer: t[:payer] || "Unknown Payer",
           amount: t[:amount],
           created_at: booking_date,
           external_id: t[:id]

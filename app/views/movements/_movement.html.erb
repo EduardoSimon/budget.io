@@ -4,7 +4,7 @@
     <p>
       <span style="white-space: nowrap"> <%= movement.description %> </span>
     </p>
-    <span><%=humanized_money_with_symbol movement.amount_cents %></span>
+    <span><%=humanized_money_with_symbol movement.amount %></span>
     <div>
       <strong>Category:</strong>
       <%= form_for [@account, movement] do |f| %>

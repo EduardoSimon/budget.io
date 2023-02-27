@@ -50,12 +50,15 @@ class OpenBankingConnector
 
     raise StandardError.new({message: "balances object was empty", params: main_balance}) if main_balance.nil?
 
-    # Fetch transactions
-    transactions = account.get_transactions["transactions"]["booked"].map do |t|
+    booked_transactions = account.get_transactions["transactions"]["booked"]
+
+    raise StandardError.new({message: "No transactions object found"}) unless booked_transactions
+
+    transactions = booked_transactions.map do |t|
       {
         id: t["transactionId"],
         date: t["bookingDate"],
-        amount: t["transactionAmount"]["amount"],
+        amount: t["transactionAmount"]["amount"].to_money,
         payer: t["debtorName"],
         description: t["remittanceInformationUnstructured"]
       }
