@@ -1,4 +1,6 @@
 class MovementsController < ApplicationController
+  before_action :set_movement, only: %i[update]
+
   def update
     respond_to do |format|
       if @movement.update(movement_params)
@@ -9,5 +11,16 @@ class MovementsController < ApplicationController
         format.json { render json: @movement.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  private
+
+  def movement_params
+    params.require(:movement).permit(:category_id, :account_id)
+  end
+
+  def set_movement
+    @movement = Movement.find(params[:id])
+    @account = Account.find(params[:account_id])
   end
 end
