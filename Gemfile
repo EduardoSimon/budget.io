@@ -81,3 +81,5 @@ end
 gem "nordigen-ruby", "~> 2.1"
 gem 'money-rails', '~>1.12'
 gem "monetize", "~> 1.12"
+
+gem "tailwindcss-rails", "~> 2.0"
