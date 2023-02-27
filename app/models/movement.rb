@@ -2,7 +2,8 @@ class Movement < ApplicationRecord
   belongs_to :account
   belongs_to :category, optional: true
   validates :payer, presence: true
-  validates :amount, presence: true, numericality: true
+
+  monetize :amount_cents
 
   def credit?
     amount < 0.0

@@ -11,11 +11,6 @@ class MovementTest < ActiveSupport::TestCase
     assert_includes movement.errors[:payer], "can't be blank"
   end
 
-  test "requires an amount" do
-    movement = Movement.create(account_id: @account.id, payer: "payer")
-    assert_includes movement.errors[:amount], "can't be blank"
-  end
-
   test "requires a decimal amount" do
     movement = Movement.create(account_id: @account.id, payer: "payer", amount: "wadus")
     assert_includes movement.errors[:amount], "is not a number"

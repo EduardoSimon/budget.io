@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_21_110549) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_27_200245) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -72,16 +72,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_21_110549) do
   end
 
   create_table "movements", force: :cascade do |t|
-    t.integer "amount_in_cents"
     t.boolean "reconciled"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "payer", null: false
-    t.decimal "amount", precision: 8, scale: 2, null: false
     t.bigint "category_id"
     t.string "external_id"
     t.string "description"
     t.bigint "account_id"
+    t.integer "amount_cents", default: 0, null: false
+    t.string "amount_currency", default: "EUR", null: false
     t.index ["account_id"], name: "index_movements_on_account_id"
     t.index ["category_id"], name: "index_movements_on_category_id"
     t.index ["external_id"], name: "index_movements_on_external_id"

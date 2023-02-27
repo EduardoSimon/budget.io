@@ -79,3 +79,5 @@ group :test do
 end
 
 gem "nordigen-ruby", "~> 2.1"
+gem 'money-rails', '~>1.12'
+gem "monetize", "~> 1.12"
