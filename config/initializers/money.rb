@@ -76,8 +76,10 @@ MoneyRails.configure do |config|
   # Default value is nil meaning "ignore this option".
   # Example:
   #
-  # config.default_format = {
-  #   no_cents_if_whole: nil,
+  # Show trailing zeros always. Example: 45.00$ instead of 45$
+  config.default_format = {
+    no_cents_if_whole: nil
+  }
   #   symbol: nil,
   #   sign_before_symbol: nil
   # }
