@@ -1,14 +1,13 @@
 <p style="color: green"><%= notice %></p>
-
-<h1>Accounts</h1>
-
+<h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+  Accounts
+</h1>
 <div id="accounts">
   <% @accounts.each do |account| %>
-    <%= render account %>
+    <%= render  partial: "card", locals: { account: account }  %>
     <p>
       <%= link_to "Show this account", account %>
     </p>
   <% end %>
 </div>
-
 <%= link_to "New account", new_account_path %>
