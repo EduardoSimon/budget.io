@@ -23,21 +23,13 @@ Use a ruby dependency manager like rbenv or asdf. The supported ruby version is 
 
 `brew services start postgresql`
 
-* Configuration
+4. Preare dabatase
 
-* Database creation
+`rails db:prepare db:seed`
 
-* Database initialization
+5. Run the server
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
+`rails s`
 
 # Domain
 
