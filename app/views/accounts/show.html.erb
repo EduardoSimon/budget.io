@@ -1,10 +1,8 @@
 <h1 class="mb-5 main-title">Account: <%= @account.name %></h1>
-
 <p style="color: green"><%= notice %></p>
-
 <h2 class="mb-5 subtitle">Movements</h2>
-<%= render partial: "movements_list", locals: { movements: @account.movements } %>
-<div class="flex justify-start gap-2">
+<%= render partial: "movements_list", locals: { movements: @account.movements.order(created_at: :desc), account: @account } %>
+<div class="flex justify-start gap-2 mt-4">
   <%= link_to "Edit this account", edit_account_path(@account), class: "btn-primary" %>
   <%= link_to "Back to accounts", accounts_path, class: "btn-primary" %>
   <%= button_to "Destroy this account", @account, method: :delete, class: "btn-primary bg-red-600" %>
