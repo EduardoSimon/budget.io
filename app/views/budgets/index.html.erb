@@ -1,14 +1,12 @@
 <p style="color: green"><%= notice %></p>
-
-<h1>Budgets</h1>
-
-<div id="budgets">
+<div class="flex items-center justify-between mb-8">
+  <h1 class="main-title">
+    Budgets
+  </h1>
+  <%= link_to "New budget", new_budget_path, class: "btn-primary" %>
+</div>
+<div id="budgets" class="grid grid-cols-2 grid-rows-2 gap-5">
   <% @budgets.each do |budget| %>
-    <%= render budget %>
-    <p>
-      <%= link_to "Show this budget", budget %>
-    </p>
+    <%= render  partial: "card", locals: { budget: budget }  %>
   <% end %>
 </div>
-
-<%= link_to "New budget", new_budget_path %>
