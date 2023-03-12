@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_27_200245) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_08_191302) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -54,11 +54,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_27_200245) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
-    t.decimal "assigned_amount", precision: 8, scale: 2, default: "0.0", null: false
-    t.decimal "target_amount", precision: 8, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "budget_id"
+    t.integer "assigned_amount_cents", default: 0, null: false
+    t.string "assigned_amount_currency", default: "EUR", null: false
+    t.integer "target_amount_cents", default: 0, null: false
+    t.string "target_amount_currency", default: "EUR", null: false
     t.index ["budget_id"], name: "index_categories_on_budget_id"
   end
 
