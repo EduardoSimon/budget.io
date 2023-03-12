@@ -1,11 +1,69 @@
 <p style="color: green"><%= notice %></p>
-<%= render @budget %>
-<% @budget.categories.each do |category| %>
-  <%= render category %>
-<% end %>
-<div>
-  <%= link_to "Create categories", new_budget_category_path(@budget) %> |
-  <%= link_to "Edit this budget", edit_budget_path(@budget) %> |
-  <%= link_to "Back to budgets", budgets_path %>
-  <%= button_to "Destroy this budget", @budget, method: :delete %>
+<h1 class="mb-5 main-title">Budget: <%= @budget.title %></h1>
+<div class="grid grid-cols-2">
+  <section>
+    <h3 class="mb-5 subtitle">Categories</h3>
+    <% @budget.categories.each do |category| %>
+      <%= render category %>
+    <% end %>
+    <div class="flex justify-start gap-2 mt-4">
+      <%= link_to "Create category", new_budget_category_path(@budget), class: "btn-primary" %>
+      <%= link_to "Edit this budget", edit_budget_path(@budget), class: "btn-primary" %>
+      <%= button_to "Destroy this budget", @budget, method: :delete, class: "btn-primary bg-red-600" %>
+    </div>
+  </section>
+  <section>
+    <h3 class="mb-5 subtitle">Uncategorized movements</h3>
+    <div class="relative overflow-x-auto">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">
+              Payer
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Type
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Amount
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Category
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Date
+            </th>
+            <th scope="col" class="px-6 py-3">
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @budget.uncategorized_movements.each do |movement| %>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <%= movement.payer %>
+              </th>
+              <td class="px-6 py-4">
+                <%= movement.debit? ? "Debit" : "Credit" %>
+              </td>
+              <td class="px-6 py-4">
+                <%= humanized_money_with_symbol movement.amount %>
+              </td>
+              <%= form_for [movement.account, movement] do |f| %>
+                <td class="px-6 py-4">
+                  <%= f.collection_select(:category_id, Category.all, :id, :name, prompt: true) %>
+                </td>
+                <td class="px-6 py-4">
+                  <%= time_tag movement.created_at %>
+                </td>
+                <td class="px-6 py-4">
+                  <%= f.submit class: "btn-primary" %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </section>
 </div>
