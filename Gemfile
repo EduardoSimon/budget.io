@@ -71,6 +71,9 @@ group :development do
   # gem "spring"
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-rails", "~> 1.6", require: false
+  gem "ed25519", require: false
+  gem "bcrypt_pbkdf", require: false
+  gem 'capistrano-rbenv', require: false
 end
 
 group :test do
