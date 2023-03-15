@@ -74,6 +74,9 @@ group :development do
   gem "ed25519", require: false
   gem "bcrypt_pbkdf", require: false
   gem 'capistrano-rbenv', require: false
+  gem 'capistrano3-puma',   require: false
+  gem 'capistrano-bundler', require: false
+  gem "capistrano-dotenv", "~> 0.0.5", require: false
 end
 
 group :test do
@@ -88,3 +91,4 @@ gem 'money-rails', '~>1.12'
 gem "monetize", "~> 1.12"
 
 gem "tailwindcss-rails", "~> 2.0"
+

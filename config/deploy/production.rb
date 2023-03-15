@@ -6,7 +6,7 @@
 # server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
-server "192.168.1.201", user: "edu", roles: %w[app db web], primary: "true"
+server "192.168.1.201", user: "rails", roles: %w[app db web], primary: "true"
 set :deploy_to, "/var/www/budgetio"
 set :branch, "main"
 set :stage, :production
@@ -41,9 +41,6 @@ set :rbenv_prefix, "/usr/bin/rbenv exec"
 #
 # Global options
 # --------------
-set :ssh_options, {
-  port: 2100
-}
 #
 # The server-based syntax can be used to override options:
 # ------------------------------------
