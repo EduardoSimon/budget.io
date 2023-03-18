@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem "rails", "~> 7.0.4"
 
 # Loads automatically .env files
-gem "dotenv-rails", groups: [:development, :test]
+gem "dotenv-rails", groups: [:development, :test, :production]
 
 # Allow whitelisting other domains when redirecting
 gem 'rack-cors'
