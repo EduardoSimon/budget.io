@@ -1,5 +1,11 @@
 <p style="color: green"><%= notice %></p>
-<h1 class="mb-5 main-title">Budget: <%= @budget.title %></h1>
+<div class="flex justify-between items-center mb-5">
+  <h1 class="main-title"><%= @budget.title %></h1>
+  <div class="flex justify-around items-center">
+    <%= link_to "Edit this budget", edit_budget_path(@budget), class: "btn-primary" %>
+    <%= button_to "Destroy this budget", @budget, method: :delete, class: "btn-primary bg-red-600 ml-3" %>
+  </div>
+</div>
 <div class="grid grid-cols-2">
   <section>
     <h3 class="mb-5 subtitle">Categories</h3>
@@ -8,8 +14,6 @@
     <% end %>
     <div class="flex justify-start gap-2 mt-4">
       <%= link_to "Create category", new_budget_category_path(@budget), class: "btn-primary" %>
-      <%= link_to "Edit this budget", edit_budget_path(@budget), class: "btn-primary" %>
-      <%= button_to "Destroy this budget", @budget, method: :delete, class: "btn-primary bg-red-600" %>
     </div>
   </section>
   <section>
