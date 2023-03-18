@@ -31,17 +31,20 @@ class AuthSession < ApplicationRecord
   end
 
   def init_open_banking_provider_session
-    institution_id = "SANDBOXFINANCE_SFIN0000"
+    account_institution_id = account.institution.institution_id
+    account_institution_id = "SANDBOXFINANCE_SFIN0000" unless ENV.fetch("RAILS_ENV") == "production"
+
+    Rails.logger.info({account_institution_id: account_institution_id, message: "Selected institution"})
 
     session_response = OpenBankingConnector.new.init_auth_session(
-      institution_id: institution_id,
+      institution_id: account_institution_id,
       internal_user_id: AuthSession.maximum(:id).to_i.next,
       redirect_url: redirect_url
     )
 
     self.url = session_response.url
     self.external_id = session_response.id
-    self.external_institution_id = institution_id
+    self.external_institution_id = account_institution_id
     self.raw_response = session_response.response
   end
 end
