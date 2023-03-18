@@ -20,7 +20,7 @@ class OpenBankingConnector
       user_language: "es"
     ).deep_symbolize_keys
 
-    pp session_response
+    Rails.logger.info(session_response)
     AuthSession.new(id: session_response[:id], url: session_response[:link], accounts: [], response: session_response)
   end
 
