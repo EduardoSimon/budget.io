@@ -1,19 +1,23 @@
 <div id="<%= dom_id category %>">
-  <div class="max-w-lg">
-    <div class="text-base font-medium flex justify-between mb-1">
+  <div class="flex items-center mb-1">
+    <div class="text-base font-medium flex-1 min-w-[70%]">
       <%= category.name %>
-      <span class="text-sm font-medium">
-        <%= humanized_money_with_symbol category.target_amount %>
-      </span>
     </div>
-    <div class="bg-gray-200 rounded-full mb-4 dark:bg-gray-700">
-      <div class="bg-green-600 rounded-full dark:bg-green-500 text-white text-center"
+    <span class="text-sm font-medium grow-0 min-w-[15%] text-right">
+      <%= humanized_money_with_symbol category.target_amount %>
+    </span>
+    <span class="text-sm font-medium grow-0 min-w-[15%] text-right">
+      <%= humanized_money_with_symbol category.target_amount %>
+    </span>
+  </div>
+  <div class="flex items-center">
+    <div class="flex-1">
+      <div class="bg-gray-200 rounded-full mb-4 dark:bg-gray-700">
+        <div class="bg-green-600 rounded-full dark:bg-green-500 text-white text-center"
        style="width: <%= category.funded_percentage %>%">
-        <%= humanized_money_with_symbol category.assigned_amount %>
+          <%= humanized_money_with_symbol category.assigned_amount %>
+        </div>
       </div>
     </div>
   </div>
-  <p>
-    <p>
-      <%= link_to "Edit this category", edit_budget_category_path(@budget,category), class: "btn-primary" %>
-    </div>
+</div>
