@@ -72,7 +72,7 @@
               </td>
               <%= form_for [movement.account, movement] do |f| %>
                 <td class="px-6 py-4">
-                  <%= f.collection_select(:category_id, Category.all, :id, :name, {prompt: true }, { onchange: 'this.form.submit()' }) %>
+                  <%= f.collection_select(:category_id, @budget.categories, :id, :name, {prompt: true }, { onchange: 'this.form.submit()' }) %>
                 </td>
                 <td class="px-6 py-4">
                   <%= time_tag movement.created_at %>

@@ -2,7 +2,7 @@ class Budget < ApplicationRecord
   validates :title, presence: true
   has_many :categories, dependent: :destroy
   has_many :accounts, dependent: :destroy
-  has_many :movements, through: :accounts
+  has_many :movements, -> { includes(:account) }, through: :accounts
 
   def uncategorized_movements
     movements.where(category_id: nil)
