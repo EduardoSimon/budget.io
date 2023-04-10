@@ -2,12 +2,12 @@
 
 funded:
   name: groceries
-  assigned_amount: 20.00
-  target_amount: 20.00
+  assigned_amount_cents: 20.00
+  target_amount_cents: 20.00
   budget: with_categories
 
 two:
-  name: MyString
-  assigned_amount: 9.99
-  target_amount: 9.99
+  name: groceries
+  assigned_amount_cents: 9.99
+  target_amount_cents: 9.99
   budget: with_categories
