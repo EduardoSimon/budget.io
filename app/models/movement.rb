@@ -4,6 +4,8 @@ class Movement < ApplicationRecord
   validates :payer, presence: true
 
   monetize :amount_cents
+  scope :debits, -> { where("amount_cents > 0") }
+  scope :without_category, -> { where("category_id IS NULL") }
 
   def credit?
     amount < 0.0
