@@ -14,4 +14,9 @@ class Budget < ApplicationRecord
     ready_to_budget_cents = debits_without_category_sum - assigned_cents_in_categories
     Money.new(ready_to_budget_cents, ready_to_budget_currency)
   end
+
+  def ready_to_budget_cents
+    super
+    ready_to_budget.amount
+  end
 end
