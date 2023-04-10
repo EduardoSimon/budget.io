@@ -4,7 +4,9 @@
       <%= category.name %>
     </div>
     <span class="text-sm font-medium grow-0 min-w-[15%] text-right">
-      <%= humanized_money_with_symbol category.target_amount %>
+      <%= form_for [@budget, category] do |f| %>
+        <%= f.text_field :assigned_amount_cents, onchange: 'this.form.submit()', class: 'w-full' %>
+      <% end %>
     </span>
     <span class="text-sm font-medium grow-0 min-w-[15%] text-right">
       <%= humanized_money_with_symbol category.target_amount %>

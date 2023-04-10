@@ -5,11 +5,6 @@ class Category < ApplicationRecord
   monetize :target_amount_cents
   belongs_to :budget
 
-  def assigned_amount_cents
-    super
-    movements.sum("amount_cents")
-  end
-
   def funded_percentage
     return 0.0 if target_amount_cents == 0
 
