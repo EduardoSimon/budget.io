@@ -8,15 +8,12 @@ class Budget < ApplicationRecord
     movements.where(category_id: nil)
   end
 
-  def ready_to_budget
-    debits_without_category_sum = movements.debits.without_category.sum("amount_cents")
-    assigned_cents_in_categories = categories.sum("assigned_amount_cents")
-    ready_to_budget_cents = debits_without_category_sum - assigned_cents_in_categories
-    Money.new(ready_to_budget_cents, ready_to_budget_currency)
-  end
-
-  def ready_to_budget_cents
-    super
-    ready_to_budget.amount
+  def ready_to_assign
+    ready_to_assign_cents = Category.find(ready_to_assign_category_id).spent_amount_cents
+    assigned_cents_in_categories = categories
+      .where
+      .not(id: ready_to_assign_category_id)
+      .sum('assigned_amount_cents')
+    Money.new(ready_to_assign_cents - assigned_cents_in_categories, ready_to_assign_currency)
   end
 end

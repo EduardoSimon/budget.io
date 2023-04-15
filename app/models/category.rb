@@ -6,6 +6,7 @@ class Category < ApplicationRecord
   belongs_to :budget
 
   def funded_percentage
+    return 0 if assigned_amount_cents == 0
     (spent_amount_cents.to_f / assigned_amount_cents.to_f * 100).clamp(0, 100)
   end
 
@@ -18,7 +19,7 @@ class Category < ApplicationRecord
   end
 
   def spent_amount_cents
-    movements.credits.sum("amount_cents") * -1
+    movements.sum("amount_cents")
   end
 
   def spent_amount

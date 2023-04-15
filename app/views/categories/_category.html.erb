@@ -6,7 +6,7 @@
     <span class="text-sm font-medium grow-0 min-w-[15%] text-right">
       <div class="flex items-center">
         <%= form_for [@budget, category] do |f| %>
-          <%= f.text_field :assigned_amount_cents, onchange: 'this.form.submit()', class: 'w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-right ' %>
+          <%= f.text_field :assigned_amount, onchange: 'this.form.submit()', class: 'w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-right ' %>
         <% end %>
         <div class='ml-3'>
           <%= currency_symbol %>
@@ -19,14 +19,14 @@
   </div>
   <div class="flex items-center">
     <div class="flex-1">
-      <div class="bg-gray-200 rounded-full mb-3 dark:bg-gray-700">
+      <div class="mb-3 bg-gray-200 rounded-full dark:bg-gray-700">
         <div class="bg-green-600 rounded-full dark:bg-green-500 text-white text-center h-4 <%= category.overspent? ? "bg-red-400" : ""%>"
        style="width: <%= category.funded_percentage %>%">
         </div>
       </div>
     </div>
   </div>
-  <div class='text-left text-sm text-gray-600'>
+  <div class='text-sm text-left text-gray-600'>
     <span><%= category.funded? ? 'Funded' : 'Needs funding' %></span>
     <span>Spent <%= humanized_money_with_symbol category.spent_amount %> of <%= humanized_money_with_symbol category.assigned_amount %></span>
   </div>
