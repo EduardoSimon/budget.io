@@ -3,6 +3,7 @@ class Budget < ApplicationRecord
   has_many :categories, dependent: :destroy
   has_many :accounts, dependent: :destroy
   has_many :movements, -> { includes(:account) }, through: :accounts
+  after_create :create_ready_to_assign_category!
 
   def uncategorized_movements
     movements.where(category_id: nil)
@@ -16,4 +17,12 @@ class Budget < ApplicationRecord
       .sum('assigned_amount_cents')
     Money.new(ready_to_assign_cents - assigned_cents_in_categories, ready_to_assign_currency)
   end
-end
+
+  private 
+
+
+  def create_ready_to_assign_category!
+    ready_to_assign_category = Category.create(budget_id: id, name: "Ready to Assign")
+    update!(ready_to_assign_category_id: ready_to_assign_category.id)
+  end
+end   
