@@ -22,7 +22,6 @@ class BudgetsController < ApplicationController
   # POST /budgets or /budgets.json
   def create
     @budget = Budget.new(budget_params)
-    create_ready_to_assign_category!
 
     respond_to do |format|
       if @budget.save
@@ -60,10 +59,6 @@ class BudgetsController < ApplicationController
 
   private
 
-  def create_ready_to_assign_category!
-    ready_to_assign_category = Category.create(budget: @budget, name: "Ready to Assign")
-    @budget.update!(ready_to_assign_category_id: ready_to_assign_category.id)
-  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_budget
