@@ -5,21 +5,29 @@ class Category < ApplicationRecord
   monetize :target_amount_cents
   belongs_to :budget
 
-  def funded_percentage
-    return 0 if assigned_amount_cents == 0
-    (spent_amount_cents.to_f / assigned_amount_cents.to_f * 100).clamp(0, 100)
-  end
-
   def funded?
-    funded_percentage >= 100
+    assigned_amount_cents >= target_amount_cents
   end
 
   def overspent?
-    (spent_amount_cents.to_f / assigned_amount_cents.to_f) > 1
+    spent_amount_cents.abs > assigned_amount_cents
+  end
+
+  def in_spending?
+    spent_percentage > 0 && spent_percentage < 100.0
+  end
+
+  def spent_percentage
+    (spent_amount_cents.abs.to_f / assigned_amount_cents.to_f) * 100.0
+  end
+
+
+  def spent_amount
+    Money.new(spent_amount_cents, movements.first.amount_currency)
   end
 
   def spent_amount_cents
-    movements.sum("amount_cents")
+    movements.pluck(Arel.sql('sum(abs(amount_cents))::integer')).first
   end
 
   def spent_amount

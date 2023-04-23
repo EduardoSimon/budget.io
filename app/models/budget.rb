@@ -1,6 +1,6 @@
 class Budget < ApplicationRecord
   validates :title, presence: true
-  has_many :categories, dependent: :destroy
+  has_many :categories,  -> { order("name") }, dependent: :destroy
   has_many :accounts, dependent: :destroy
   has_many :movements, -> { includes(:account) }, through: :accounts
   after_create :create_ready_to_assign_category!
