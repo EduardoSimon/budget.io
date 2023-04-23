@@ -27,7 +27,7 @@ class Category < ApplicationRecord
   end
 
   def spent_amount_cents
-    movements.pluck(Arel.sql('sum(abs(amount_cents))::integer')).first
+    movements.pluck(Arel.sql('sum(abs(amount_cents))::integer')).first || 0
   end
 
   def spent_amount

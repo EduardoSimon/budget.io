@@ -7,6 +7,10 @@ class CategoryTest < ActiveSupport::TestCase
     @category = Category.create!(name: 'test', budget: @budget)
   end
 
+  teardown do
+    @category.destroy!
+  end
+
   test "name is a mandatory parameter" do
     category = Category.create(name: "test")
     assert_empty category.errors[:name]
@@ -91,5 +95,11 @@ class CategoryTest < ActiveSupport::TestCase
     @category.update!(assigned_amount_cents: 20000)
 
     assert_equal(@category.spent_amount, Money.new(20000, "EUR"))
+  end
+
+  test "spent_amount returns 0 when there are no movements" do
+    @category.update!(assigned_amount_cents: 20000)
+
+    assert_equal(@category.spent_amount_cents, Money.new(0, "EUR"))
   end
 end
