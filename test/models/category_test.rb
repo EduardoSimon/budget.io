@@ -83,4 +83,13 @@ class CategoryTest < ActiveSupport::TestCase
 
     assert_equal(@category.in_spending?, false)
   end
+
+  test "spent_amount returns the sum of categorie's movements amounts as a Money object" do
+    movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category)
+    movement_2 = Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category)
+
+    @category.update!(assigned_amount_cents: 20000)
+
+    assert_equal(@category.spent_amount, Money.new(20000, "EUR"))
+  end
 end
