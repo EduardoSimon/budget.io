@@ -2,7 +2,7 @@ require "test_helper"
 
 class BudgetsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @budget = budgets(:empty)
+    @budget = Budget.create!(title: 'test')
   end
 
   test "should get index" do

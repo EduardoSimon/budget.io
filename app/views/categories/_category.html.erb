@@ -1,21 +1,42 @@
 <div id="<%= dom_id category %>">
-  <div class="max-w-lg">
-    <div class="text-base font-medium flex justify-between mb-1">
+  <div class="flex items-center mb-3">
+    <div class="text-base font-medium flex-1 min-w-[70%]">
       <%= category.name %>
-      <span class="text-sm font-medium">
-        <%= humanized_money_with_symbol category.target_amount %>
-      </span>
     </div>
-    <div class="bg-gray-200 rounded-full mb-4 dark:bg-gray-700">
-      <div class="bg-green-600 rounded-full dark:bg-green-500 text-white text-center"
-       style="width: <%= category.funded_percentage %>%">
-        <%= humanized_money_with_symbol category.assigned_amount %>
+    <span class="text-sm font-medium grow-0 min-w-[15%] text-right">
+      <div class="flex items-center">
+        <%= form_for [@budget, category] do |f| %>
+          <%= f.text_field :assigned_amount, onchange: 'this.form.submit()', class: 'w-full rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-right ' %>
+        <% end %>
+        <div class='ml-3'>
+          <%= currency_symbol %>
+        </div>
+      </div>
+    </span>
+    <span class="text-sm font-medium grow-0 min-w-[15%] text-right">
+      <%= humanized_money_with_symbol category.spent_amount %>
+    </span>
+  </div>
+  <div class="flex items-center">
+    <div class="flex-1">
+      <div class="mb-3 bg-gray-200 rounded-full dark:bg-gray-700">
+        <div class="bg-green-600 rounded-full dark:bg-green-500 text-white text-center h-4 <%= category.overspent? ? "bg-red-400" : ""%>"
+             style="width: <%= 100.0 - category.spent_percentage %>%">
+        </div>
       </div>
     </div>
   </div>
-  <p>
-    <strong>Assigned amount:</strong>
-    <strong>Target amount:</strong>
-    <p>
-      <%= link_to "Edit this category", edit_budget_category_path(@budget,category), class: "btn-primary" %>
-    </div>
+  <div class='text-sm text-left text-gray-600'>
+    <% if category.overspent? %>
+      <span>Overspent</span>
+    <% elsif category.funded? %>
+      <span>Funded</span>
+    <% else %>
+      <span>Needs Funding</span>
+    <% end %>
+    <span> <%= humanized_money_with_symbol category.spent_amount %> of <%= humanized_money_with_symbol category.assigned_amount %></span>
+  </div>
+  <div class='text-sm text-left text-gray-600'>
+    <span> Target <%= humanized_money_with_symbol category.target_amount %></span>
+  </div>
+</div>

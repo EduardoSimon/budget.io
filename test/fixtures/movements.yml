@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 credit:
-  amount_cents: 1
+  amount_cents: -100
   reconciled: false
   payer: "payer_1"
 
 debit:
-  amount_cents: 1
+  amount_cents: 100
   reconciled: false
   payer: "payer_2"

@@ -59,9 +59,10 @@ class BudgetsController < ApplicationController
 
   private
 
+
   # Use callbacks to share common setup or constraints between actions.
   def set_budget
-    @budget = Budget.find(params[:id])
+    @budget = Budget.includes(:categories).find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
