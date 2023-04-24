@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'budgets#index'
   resources :budgets do
     resources :categories
   end
