@@ -29,6 +29,16 @@
         </div>
       </div>
     <% end %>
+    <div class="flex justify-end mb-2">
+      <%= form_with url: "#{budget_url(@budget)}", method: :get do |form| %>
+        <%= select_month(@current_month, {},
+                         {
+                           field_name: 'month',
+                           onchange: 'this.form.submit()',
+                           class: 'rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-5'
+                         }) %>
+                     <% end %>
+    </div>
     <div class="flex items-center mb-2">
       <h3 class="subtitle flex-1 min-w-[70%]">Categories</h3>
       <h5 class="grow-0 min-w-[15%] text-right">Assigned</h3>
@@ -36,7 +46,7 @@
     </div>
     <% @budget.categories.each do |category| %>
       <% if category.id != @budget.ready_to_assign_category_id %>
-        <%= render category %>
+        <%= render category, locals: { current_month: @current_month } %>
       <% end %>
     <% end %>
     <div class="flex justify-start mt-4 gap-2">

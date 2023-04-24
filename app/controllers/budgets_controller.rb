@@ -1,4 +1,5 @@
 class BudgetsController < ApplicationController
+  before_action :set_month_param, only: %i[show]
   before_action :set_budget, only: %i[show edit update destroy]
 
   # GET /budgets or /budgets.json
@@ -59,10 +60,15 @@ class BudgetsController < ApplicationController
 
   private
 
+  def set_month_param
+    @current_month = params.dig(:date,:month) ? Date.new(Date.today.year, params[:date][:month].to_i, 1) : Date.today
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_budget
-    @budget = Budget.includes(:categories).find(params[:id])
+    @budget = Budget
+      .includes(:categories, :accounts, :movements)
+      .find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
