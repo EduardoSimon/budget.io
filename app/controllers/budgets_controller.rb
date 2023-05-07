@@ -61,7 +61,7 @@ class BudgetsController < ApplicationController
   private
 
   def set_month_param
-    @current_month = params.dig(:date,:month) ? Date.new(Date.today.year, params[:date][:month].to_i, 1) : Date.today
+    @current_month = params.dig(:date,:month) ? Date.new(Date.today.year, params[:date][:month].to_i, 1) : Date.today.beginning_of_month
   end
 
   # Use callbacks to share common setup or constraints between actions.
