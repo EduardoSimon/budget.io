@@ -12,9 +12,10 @@ class Budget < ApplicationRecord
   def ready_to_assign
     ready_to_assign_cents = Category.find(ready_to_assign_category_id).spent_amount_cents
     assigned_cents_in_categories = categories
+      .joins(:monthly_assignments)
       .where
       .not(id: ready_to_assign_category_id)
-      .sum('assigned_amount_cents')
+      .sum('monthly_assignments.amount_cents')
     Money.new(ready_to_assign_cents - assigned_cents_in_categories, ready_to_assign_currency)
   end
 

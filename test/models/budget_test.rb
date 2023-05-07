@@ -51,18 +51,22 @@ class BudgetTest < ActiveSupport::TestCase
 
   test "ready to assign amount is the sum of movements in ready to assign category minus the sum of assigned amounts in categories" do
     movement_amount_cents = 10000
+    movement_date = Time.now.utc
+    beginning_of_month = movement_date.beginning_of_month
+
 
     institution = institutions(:revolut)
     budget = Budget.create(title: "test")
-    category = Category.create(name: "test", budget_id: budget.id, assigned_amount_cents: movement_amount_cents)
+    category = Category.create(name: "test", budget_id: budget.id)
+    MonthlyAssignment.create!(category: category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(10000, "EUR")) 
 
     account = Account.create!(budget: budget, institution: institution)
     Movement.create!(account: account, category_id: budget.ready_to_assign_category_id,
-                     amount_cents: movement_amount_cents, payer: "with category")
+                     amount_cents: movement_amount_cents, payer: "with category", created_at: beginning_of_month)
     Movement.create!(account: account, category_id: budget.ready_to_assign_category_id,
-                     amount_cents: movement_amount_cents, payer: "with category")
+                     amount_cents: movement_amount_cents, payer: "with category", created_at: beginning_of_month)
     Movement.create!(account: account, amount_cents: movement_amount_cents,
-                     payer: "without category")
+                     payer: "without category", created_at: beginning_of_month)
 
     assert_equal(10000, budget.ready_to_assign.cents)
   end

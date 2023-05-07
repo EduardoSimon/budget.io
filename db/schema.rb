@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_15_120018) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_24_171059) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -76,6 +76,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_15_120018) do
     t.index ["institution_id"], name: "unique_institution_id", unique: true
   end
 
+  create_table "monthly_assignments", force: :cascade do |t|
+    t.integer "amount_cents", null: false
+    t.string "amount_currency", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_monthly_assignments_on_category_id"
+  end
+
   create_table "movements", force: :cascade do |t|
     t.boolean "reconciled"
     t.datetime "created_at", null: false
@@ -96,6 +107,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_15_120018) do
   add_foreign_key "accounts", "institutions"
   add_foreign_key "auth_sessions", "accounts"
   add_foreign_key "categories", "budgets"
+  add_foreign_key "monthly_assignments", "categories"
   add_foreign_key "movements", "accounts"
   add_foreign_key "movements", "categories"
 end

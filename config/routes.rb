@@ -4,6 +4,8 @@ Rails.application.routes.draw do
     resources :categories
   end
 
+  resources :monthly_assignments, only: [:index, :update, :show, :create]
+
   resources :accounts do
     post "sync", to: "accounts#sync"
 
