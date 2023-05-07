@@ -36,7 +36,7 @@ export default class extends Controller {
       })
     })
       .then(v => {
-        window.location.reload()
+        window.location.assign(window.location.href)
       }) 
   }
 }
