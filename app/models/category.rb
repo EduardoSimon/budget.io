@@ -31,7 +31,7 @@ class Category < ApplicationRecord
       next_month_date = month_date.beginning_of_month.next_month
 
       movements
-        .between_dates(month_date, next_month_date)
+        .between_dates(month_date.beginning_of_month, next_month_date)
         .pluck(Arel.sql('sum(abs(amount_cents))::integer')).first || 0
     else
       movements.pluck(Arel.sql('sum(abs(amount_cents))::integer')).first || 0
