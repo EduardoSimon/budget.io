@@ -85,6 +85,7 @@
               <%= form_for [movement.account, movement] do |f| %>
                 <td class="px-6 py-4">
                   <%= f.collection_select(:category_id, @budget.categories, :id, :name, {prompt: true }, { onchange: 'this.form.submit()' }) %>
+                  <%= f.hidden_field(:date, { value: @current_month}) %>
                 </td>
                 <td class="px-6 py-4">
                   <%= time_tag movement.created_at %>
