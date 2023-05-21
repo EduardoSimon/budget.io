@@ -21,10 +21,16 @@ module AuthSessionTest
 
   class SharedContext < ActiveSupport::TestCase
     def setup
+      freeze_time
+      @current_time = Time.now
       @uuid = SecureRandom.uuid
       @account = accounts(:one)
       @auth_session = auth_sessions(:in_progress)
       @connector_mock = Minitest::Mock.new
+    end
+
+    teardown do
+      unfreeze_time
     end
 
     def subject(use_mock: false, session_result: nil)
@@ -151,7 +157,7 @@ module AuthSessionTest
         @result
       ) do |args|
         assert_equal "SANDBOXFINANCE_SFIN0000", args[:institution_id]
-        assert_equal AuthSession.maximum(:id).to_i.next, args[:internal_user_id]
+        assert_equal "#{AuthSession.maximum(:id).to_i.next}_#{@current_time.to_i}", args[:internal_user_id]
         assert_equal @redirect_url, args[:redirect_url]
       end
 

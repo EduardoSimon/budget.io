@@ -38,7 +38,7 @@ class AuthSession < ApplicationRecord
 
     session_response = OpenBankingConnector.new.init_auth_session(
       institution_id: account_institution_id,
-      internal_user_id: AuthSession.maximum(:id).to_i.next,
+      internal_user_id: "#{AuthSession.maximum(:id).to_i.next}_#{Time.now.to_i}",
       redirect_url: redirect_url
     )
 

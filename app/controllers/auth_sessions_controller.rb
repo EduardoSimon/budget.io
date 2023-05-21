@@ -13,7 +13,8 @@ class AuthSessionsController < ApplicationController
   end
 
   def result
-    auth_session = AuthSession.find_by(id: params[:ref])
+    session_id = params[:ref].split('_').first
+    auth_session = AuthSession.find_by(id: session_id)
 
     auth_session.update_with_provider_session_result!
 
