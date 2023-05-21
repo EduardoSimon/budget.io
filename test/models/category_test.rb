@@ -87,6 +87,16 @@ class CategoryTest < ActiveSupport::TestCase
     assert_equal(@category.overspent?(beginning_of_month), false)
   end
 
+  test "overspent? returns false when the target_amount is 0 and the assignment is 0"  do
+    movement_date = Time.now.utc
+    beginning_of_month = movement_date.beginning_of_month
+
+    @category.update!(target_amount_cents: 0)
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(0, "EUR")) 
+
+    assert_equal(@category.overspent?(beginning_of_month), false)
+  end
+
   test "spent_percentage is the ratio between the spent amount and the assigned amount in a given month" do
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
