@@ -5,8 +5,10 @@ class Budget < ApplicationRecord
   has_many :movements, -> { includes(:account) }, through: :accounts
   after_create :create_ready_to_assign_category!
 
-  def uncategorized_movements
-    movements.where(category_id: nil)
+  def uncategorized_movements_in(current_month)
+    beginning_of_month = current_month.beginning_of_month
+    end_of_month = current_month.end_of_month
+    movements.between_dates(beginning_of_month, end_of_month).where(category_id: nil)
   end
 
   def ready_to_assign

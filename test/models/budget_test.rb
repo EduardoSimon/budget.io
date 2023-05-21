@@ -23,20 +23,23 @@ class BudgetTest < ActiveSupport::TestCase
     assert_equal(budget.accounts.first.id, account.id)
   end
 
-  test ".uncategorized_movements" do
+  test ".uncategorized_movements_in returns movmenets between dates" do
     movement_amount_cents = 10000
 
     institution = institutions(:revolut)
     budget = Budget.create!(title: "test")
+    month = DateTime.now.beginning_of_month
 
     account = Account.create!(budget: budget, institution: institution)
     movement_1 = Movement.create!(account: account,
                      amount_cents: movement_amount_cents, payer: "with category")
     movement_2 = Movement.create!(account: account,
-                     amount_cents: movement_amount_cents, payer: "with category")
+                                  amount_cents: movement_amount_cents,
+                                  payer: "with category",
+                                  created_at: month.next_month)
 
-    assert_includes budget.uncategorized_movements, movement_1 
-    assert_includes budget.uncategorized_movements, movement_2
+    assert_includes budget.uncategorized_movements_in(month), movement_1 
+    assert_not_includes budget.uncategorized_movements_in(month), movement_2
   end
 
   test "has a category named Ready to Assign when created" do
