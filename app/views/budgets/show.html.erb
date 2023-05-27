@@ -69,6 +69,12 @@
               Category
             </th>
             <th scope="col" class="px-6 py-3">
+              Account
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Transfer to
+            </th>
+            <th scope="col" class="px-6 py-3">
               Date
             </th>
           </tr>
@@ -87,10 +93,19 @@
                   <%= f.collection_select(:category_id, @budget.categories, :id, :name, {prompt: true }, { onchange: 'this.form.submit()' }) %>
                   <%= f.hidden_field(:date, { value: @current_month}) %>
                 </td>
+              <% end %>
+              <td class="px-6 py-4">
+                <%= movement.account.name %>
+              </td>
+              <%= form_for [movement.account, movement] do |f| %>
                 <td class="px-6 py-4">
-                  <%= time_tag movement.created_at %>
+                  <%= f.collection_select(:transfer_to_account_id, @budget.accounts, :id, :name, {prompt: true }, { onchange: 'this.form.submit()' }) %>
+                  <%= f.hidden_field(:date, { value: @current_month}) %>
                 </td>
               <% end %>
+              <td class="px-6 py-4">
+                <%= time_tag movement.created_at %>
+              </td>
             </tr>
           <% end %>
         </tbody>

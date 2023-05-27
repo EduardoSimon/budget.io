@@ -44,4 +44,36 @@ class MovementTest < ActiveSupport::TestCase
     refute movement.credit?
     assert movement.debit?
   end
+
+  test "creates an associated movement if set as transfer" do
+    another_account = accounts(:two)
+    movement_amount = -1500
+    movement = Movement.create(account_id: @account.id, payer: "payer", amount_cents: movement_amount)
+
+    assert_difference("Movement.count") do
+      movement.update!(transfer_to_account_id: another_account.id)
+    end
+
+    contra_movement = Movement.order(created_at: :desc).first
+    assert_equal contra_movement.amount_cents, movement_amount.abs
+    assert_equal contra_movement.account_id, another_account.id
+    assert_nil contra_movement.transfer_to_account_id
+  end
+
+  test "does not create an associated movement if the contra movement is already created" do
+    another_account = accounts(:two)
+    movement_amount = -1500
+    contra_movement = Movement.create!(account_id: another_account.id,
+                                       payer: "payer",
+                                       amount_cents: movement_amount * -1)
+    movement = Movement.create!(account_id: @account.id,
+                                transfer_to_account_id: another_account.id,
+                                payer: "payer",
+                                amount_cents: movement_amount,
+                                contra_movement_id: contra_movement.id)
+
+    assert_no_difference("Movement.count") do
+      movement.update!(transfer_to_account_id: another_account.id)
+    end
+  end
 end

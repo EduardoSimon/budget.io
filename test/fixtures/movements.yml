@@ -4,8 +4,10 @@ credit:
   amount_cents: -100
   reconciled: false
   payer: "payer_1"
+  account: one
 
 debit:
   amount_cents: 100
   reconciled: false
   payer: "payer_2"
+  account: one

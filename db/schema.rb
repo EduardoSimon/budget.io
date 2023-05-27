@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_07_104303) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_27_110534) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -96,9 +96,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_07_104303) do
     t.bigint "account_id"
     t.integer "amount_cents", default: 0, null: false
     t.string "amount_currency", default: "EUR", null: false
+    t.bigint "transfer_to_account_id"
+    t.bigint "contra_movement_id"
     t.index ["account_id"], name: "index_movements_on_account_id"
     t.index ["category_id"], name: "index_movements_on_category_id"
+    t.index ["contra_movement_id"], name: "index_movements_on_contra_movement_id"
     t.index ["external_id"], name: "index_movements_on_external_id"
+    t.index ["transfer_to_account_id"], name: "index_movements_on_transfer_to_account_id"
   end
 
   add_foreign_key "accounts", "budgets"
@@ -107,5 +111,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_07_104303) do
   add_foreign_key "categories", "budgets"
   add_foreign_key "monthly_assignments", "categories"
   add_foreign_key "movements", "accounts"
+  add_foreign_key "movements", "accounts", column: "transfer_to_account_id"
   add_foreign_key "movements", "categories"
 end

@@ -7,4 +7,9 @@ class Account < ApplicationRecord
   def authenticated?
     external_account_id.present?
   end
+
+  def balance
+    super
+    Money.new(movements.sum(:amount_cents), "EUR")
+  end
 end

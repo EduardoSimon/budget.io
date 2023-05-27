@@ -8,7 +8,8 @@ class Budget < ApplicationRecord
   def uncategorized_movements_in(current_month)
     beginning_of_month = current_month.beginning_of_month
     end_of_month = current_month.end_of_month
-    movements.between_dates(beginning_of_month, end_of_month).where(category_id: nil)
+    movements.between_dates(beginning_of_month, end_of_month)
+      .where(category_id: nil, transfer_to_account_id: nil)
   end
 
   def ready_to_assign

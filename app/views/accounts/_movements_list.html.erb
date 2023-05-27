@@ -15,16 +15,20 @@
           Category
         </th>
         <th scope="col" class="px-6 py-3">
-          Date
+          Transfer to/from
         </th>
         <th scope="col" class="px-6 py-3">
+          Transfer account
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Date
         </th>
       </tr>
     </thead>
     <tbody>
       <% movements.each do |movement| %>
         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900  whitespace-normal dark:text-white">
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-normal dark:text-white">
             <%= movement.description %>
           </th>
           <td class="px-6 py-4">
@@ -33,15 +37,27 @@
           <td class="px-6 py-4">
             <%= humanized_money_with_symbol movement.amount %>
           </td>
-          <%= form_for [account, movement] do |f| %>
+          <%= form_for [@account, movement] do |f| %>
             <td class="px-6 py-4">
-              <%= f.collection_select(:category_id, Category.all, :id, :name, prompt: true) %>
+              <%= f.collection_select(:category_id, Category.all, :id, :name,  { prompt: true }, { onchange: 'this.form.submit()' }) %>
+            </td>
+            <td class="px-6 py-4">
+            <% if !movement.transfer_to_account_id.nil? && movement.transfer_to_account_id != @account.id %>
+              <p>
+              <span class="text-2xl"/>➡️</span> Outflow
+              </p>
+            <% elsif !movement.transfer_to_account_id.nil? %>
+              ⬅️ Inflow
+            <% end %>
+            </td>
+            <td class="flex items-center justify-between px-6 py-4">
+              <%= f.collection_select(:transfer_to_account_id, Account.all, :id, :name, { prompt: true, include_blank: true }, { onchange: 'this.form.submit()' }) %>
+              <% if !movement.transfer_to_account_id.nil? && movement.transfer_to_account_id != @account.id %>
+                <%= link_to "See account", account_path(movement.transfer_to_account_id) %> 
+              <% end %>
             </td>
             <td class="px-6 py-4">
               <%= time_tag movement.created_at %>
-            </td>
-            <td class="px-6 py-4">
-              <%= f.submit class: "btn-primary" %>
             </td>
           <% end %>
         </tr>

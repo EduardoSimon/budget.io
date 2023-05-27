@@ -11,14 +11,16 @@ class AccountTest < ActiveSupport::TestCase
     assert_equal @budget.id, account.budget.id
   end
 
-  test "has a balance" do
+  test "its balances is the sum of its movements' amount" do
     account = Account.create!(
       name: "test",
       institution: @institution,
-      budget: @budget,
-      balance: 1912.14
+      budget: @budget
     )
 
-    assert_equal account.balance, 1912.14
+    movement = Movement.create(account_id: account.id, payer: "payer", amount_cents: 100_00)
+    movement_2 = Movement.create(account_id: account.id, payer: "payer", amount_cents: -50_00)
+
+    assert_equal account.balance.cents, 50_00
   end
 end
