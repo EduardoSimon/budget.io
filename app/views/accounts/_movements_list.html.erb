@@ -39,7 +39,7 @@
           </td>
           <%= form_for [@account, movement] do |f| %>
             <td class="px-6 py-4">
-              <%= f.collection_select(:category_id, Category.all, :id, :name,  { prompt: true }, { onchange: 'this.form.submit()' }) %>
+              <%= f.collection_select(:category_id, Category.all, :id, :name,  { prompt: true }, { onchange: 'this.form.requestSubmit()' }) %>
             </td>
             <td class="px-6 py-4">
             <% if !movement.transfer_to_account_id.nil? && movement.transfer_to_account_id != @account.id %>
@@ -51,7 +51,7 @@
             <% end %>
             </td>
             <td class="flex items-center justify-between px-6 py-4">
-              <%= f.collection_select(:transfer_to_account_id, Account.all, :id, :name, { prompt: true, include_blank: true }, { onchange: 'this.form.submit()' }) %>
+              <%= f.collection_select(:transfer_to_account_id, Account.all, :id, :name, { prompt: true, include_blank: true }, { onchange: 'this.form.requestSubmit()' }) %>
               <% if !movement.transfer_to_account_id.nil? && movement.transfer_to_account_id != @account.id %>
                 <%= link_to "See account", account_path(movement.transfer_to_account_id) %> 
               <% end %>

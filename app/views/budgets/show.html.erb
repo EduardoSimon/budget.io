@@ -34,7 +34,7 @@
         <%= select_month(@current_month, {},
                          {
                            field_name: 'month',
-                           onchange: 'this.form.submit()',
+                           onchange: 'this.form.requestSubmit()',
                            class: 'rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-5'
                          }) %>
                      <% end %>
@@ -99,7 +99,7 @@
               </td>
               <%= form_for [movement.account, movement] do |f| %>
                 <td class="px-6 py-4">
-                  <%= f.collection_select(:transfer_to_account_id, @budget.accounts, :id, :name, {prompt: true }, { onchange: 'this.form.submit()' }) %>
+                  <%= f.collection_select(:transfer_to_account_id, @budget.accounts, :id, :name, {prompt: true }, { onchange: 'this.form.requestSubmit()' }) %>
                   <%= f.hidden_field(:date, { value: @current_month}) %>
                 </td>
               <% end %>
