@@ -20,9 +20,7 @@ class MonthlyAssignmentsController < ApplicationController
 
 
     respond_to do |format|
-      puts assignment_params
       if @assignment.update!(assignment_params)
-        pp @assignment.amount_cents
         format.json { render :show, status: :ok, location: @assignment }
       else
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
