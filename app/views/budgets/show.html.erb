@@ -42,7 +42,7 @@
     <div class="flex items-center mb-2">
       <h3 class="subtitle flex-1 min-w-[70%]">Categories</h3>
       <h5 class="grow-0 min-w-[15%] text-right">Assigned</h3>
-      <h5 class="grow-0 min-w-[15%] text-right">Activity</h3>
+      <h5 class="grow-0 min-w-[15%] text-right max-w-">Available to spend</h3>
     </div>
     <% @budget.categories.each do |category| %>
       <% if category.id != @budget.ready_to_assign_category_id %>

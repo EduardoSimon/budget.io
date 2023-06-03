@@ -160,4 +160,35 @@ class CategoryTest < ActiveSupport::TestCase
 
     assert_equal(@category.spent_amount_in_month(beginning_of_month), Money.new(0, "EUR"))
   end
+
+
+  test ".fully_spent? returns true when spent amount equals assigned_amount" do
+    movement_date = Time.now.utc
+    beginning_of_month = movement_date.beginning_of_month
+
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(200_00, "EUR")) 
+    movement_1 = Movement.create!(payer: "payer_1", amount_cents: -200_00, account: @account, category: @category, created_at: movement_date)
+
+    assert_equal(@category.fully_spent?(beginning_of_month), true)
+  end
+
+  test ".fully_spent? returns false when spent amount does not equal assigned_amount" do
+    movement_date = Time.now.utc
+    beginning_of_month = movement_date.beginning_of_month
+
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(200_00, "EUR")) 
+    movement_1 = Movement.create!(payer: "payer_1", amount_cents: -300_00, account: @account, category: @category, created_at: movement_date)
+
+    assert_equal(@category.fully_spent?(beginning_of_month), false)
+  end
+
+  test ".available_to_spend_in returns the positive balance for a given month" do
+    movement_date = Time.now.utc
+    beginning_of_month = movement_date.beginning_of_month
+
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(200_00, "EUR")) 
+    movement_1 = Movement.create!(payer: "payer_1", amount_cents: -100_00, account: @account, category: @category, created_at: movement_date)
+
+    assert_equal(@category.available_to_spend_in(beginning_of_month), Money.new(100_00, "EUR"))
+  end
 end

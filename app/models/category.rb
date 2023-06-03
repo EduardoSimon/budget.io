@@ -5,6 +5,10 @@ class Category < ApplicationRecord
   monetize :target_amount_cents
   belongs_to :budget
 
+  def fully_spent?(current_month)
+    spent_amount_cents_in_month(current_month) == assigned_amount_in(current_month).cents
+  end
+
   def funded?(current_month)
     assigned_amount_in(current_month).cents >= target_amount_cents
   end
@@ -14,7 +18,11 @@ class Category < ApplicationRecord
 
     return false if target_amount_cents == 0 && assigned_amount_in_month == 0 && spent_amount_cents_in_month(current_month) == 0
 
-    spent_amount_cents.abs > assigned_amount_in(current_month).cents
+    spent_amount_cents > assigned_amount_in(current_month).cents
+  end
+  
+  def available_to_spend_in(current_month)
+    assignment_for_month(current_month).amount - spent_amount_in_month(current_month)
   end
 
   def in_spending?(month_date)
