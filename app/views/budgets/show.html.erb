@@ -8,34 +8,34 @@
 </div>
 <div class="grid grid-cols-2">
   <section class="p-2">
-    <% if @budget.ready_to_assign.cents > 0 %>
-      <div id="alert-1" class="flex p-4 mb-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
-        <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-        <span class="sr-only">Info</span>
-        <div class="ml-3 text-sm font-medium">
-          There are movements ready to budget <span class="font-semibold underline hover:no-underline">
-            <%= humanized_money_with_symbol @budget.ready_to_assign %>
-          </span>
+    <div class="flex items-center justify-start mb-2">
+      <% if @budget.ready_to_assign.cents > 0 %>
+        <div id="alert-1" class="flex flex-1 p-4 mb-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 min-w-[80%]" role="alert">
+          <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+          <span class="sr-only">Info</span>
+          <div class="ml-3 text-sm font-medium">
+            There are movements ready to budget <span class="font-semibold underline hover:no-underline">
+              <%= humanized_money_with_symbol @budget.ready_to_assign %>
+            </span>
+          </div>
         </div>
-      </div>
-    <% elsif  @budget.ready_to_assign.cents < 0 %>
-      <div id="alert-2" class="flex p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-        <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-        <span class="sr-only">Info</span>
-        <div class="ml-3 text-sm font-medium">
-          Your budget is overspent.  <span class="font-semibold underline hover:no-underline">
-            <%= humanized_money_with_symbol @budget.ready_to_assign %>
-          </span>
+      <% elsif  @budget.ready_to_assign.cents < 0 %>
+        <div id="alert-2" class="flex p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 min-w-[80%]" role="alert">
+          <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+          <span class="sr-only">Info</span>
+          <div class="ml-3 text-sm font-medium">
+            Your budget is overspent.  <span class="font-semibold underline hover:no-underline">
+              <%= humanized_money_with_symbol @budget.ready_to_assign %>
+            </span>
+          </div>
         </div>
-      </div>
-    <% end %>
-    <div class="flex justify-end mb-2">
-      <%= form_with url: "#{budget_url(@budget)}", method: :get do |form| %>
+      <% end %>
+      <%= form_with url: "#{budget_url(@budget)}", class: 'ml-2 first:ml-0', method: :get do |form| %>
         <%= select_month(@current_month, {},
                          {
                            field_name: 'month',
                            onchange: 'this.form.requestSubmit()',
-                           class: 'rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-5'
+                           class: 'rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-5 '
                          }) %>
                      <% end %>
     </div>
