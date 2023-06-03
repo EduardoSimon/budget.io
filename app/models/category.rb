@@ -22,7 +22,7 @@ class Category < ApplicationRecord
   end
 
   def spent_percentage_in_month(month_date)
-    (spent_amount_cents_in_month(month_date).abs.to_f / assigned_amount_in(month_date).cents.to_f) * 100.0
+    (spent_amount_cents_in_month(month_date).to_f / assigned_amount_in(month_date).cents.to_f) * 100.0
   end
 
 
@@ -36,14 +36,14 @@ class Category < ApplicationRecord
 
       movements
         .between_dates(month_date.beginning_of_month, next_month_date)
-        .pluck(Arel.sql('sum(abs(amount_cents))::integer')).first || 0
+        .sum(:amount_cents) * -1  || 0
     else
-      movements.pluck(Arel.sql('sum(abs(amount_cents))::integer')).first || 0
+      movements.sum(:amount_cents) * -1 || 0
     end
   end
 
   def spent_amount_cents
-    movements.pluck(Arel.sql('sum(abs(amount_cents))::integer')).first || 0
+    movements.sum(:amount_cents) * -1 || 0
   end
 
   def assignment_for_month(month_date)

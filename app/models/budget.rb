@@ -13,7 +13,7 @@ class Budget < ApplicationRecord
   end
 
   def ready_to_assign
-    ready_to_assign_cents = Category.find(ready_to_assign_category_id).spent_amount_cents
+    ready_to_assign_cents = Category.find(ready_to_assign_category_id).spent_amount_cents * -1
     assigned_cents_in_categories = categories
       .joins(:monthly_assignments)
       .where

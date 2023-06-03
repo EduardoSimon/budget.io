@@ -141,15 +141,15 @@ class CategoryTest < ActiveSupport::TestCase
     assert_equal(@category.in_spending?(beginning_of_month), false)
   end
 
-  test "spent_amount returns the sum of categorie's movements amounts as a Money object" do
+  test "spent_amount returns the sum of categorie's movements amounts as a Money object counting expenses as positive and income as negative" do
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 
-    movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    movement_2 = Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
+    movement_1 = Movement.create!(payer: "payer_1", amount_cents: -100_00, account: @account, category: @category, created_at: movement_date)
+    movement_2 = Movement.create!(payer: "payer_2", amount_cents: 50_00, account: @account, category: @category, created_at: movement_date)
     MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(20000, "EUR")) 
 
-    assert_equal(@category.spent_amount_in_month(beginning_of_month), Money.new(20000, "EUR"))
+    assert_equal(@category.spent_amount_in_month(beginning_of_month), Money.new(50_00, "EUR"))
   end
 
   test "spent_amount returns 0 when there are no movements" do
