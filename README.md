@@ -23,9 +23,9 @@ Use a ruby dependency manager like rbenv or asdf. The supported ruby version is 
 
 `brew services start postgresql`
 
-4. Preare dabatase
+4. Prepare dabatase
 
-`rails db:prepare db:seed`
+`rails db:create db:migrate db:seed`
 
 5. Run the server
 
