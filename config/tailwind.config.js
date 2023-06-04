@@ -1,5 +1,5 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
-const colors = require("tailwindcss/colors");
+const { warmGray, trueGray, coolGray, blueGray, ...colors} = require("tailwindcss/colors");
 const myColors = {
   ...colors,
   caper: {
