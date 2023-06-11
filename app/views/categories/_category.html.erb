@@ -40,7 +40,7 @@
           <% bar_class_name = "bg-new-york-pink-300"  %>
         <% end %>
         <div class="z-0 bg-gray-200 text-center h-2 rounded-full <%= bar_class_name %>"
-             style="width: <%= category.spent_percentage_in_month(@current_month) %>%">
+             style="width: <%= category.spent_percentage_in_month(@current_month).clamp(0.0,100.0) %>%">
         </div>
       </div>
     </div>
