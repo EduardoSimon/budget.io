@@ -7,7 +7,7 @@ class Movement < ApplicationRecord
   scope :debits, -> { where("amount_cents >= 0") }
   scope :credits, -> { where("amount_cents < 0") }
   scope :without_category, -> { where("category_id IS NULL") }
-  scope :between_dates, ->(from_date, to_date) { where("movements.created_at BETWEEN ? AND ?", from_date, to_date) }
+  scope :between_dates, ->(from_date, to_date) { where("movements.created_at >= ? AND movements.created_at < ?", from_date, to_date) }
 
   before_update :create_associated_movement_if_set_as_transfer
 

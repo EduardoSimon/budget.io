@@ -9,6 +9,10 @@ class CategoryTest < ActiveSupport::TestCase
 
   teardown do
     @category.destroy!
+    Movement.destroy_all
+    @account.destroy!
+    @budget.destroy!
+    MonthlyAssignment.destroy_all
   end
 
   test "name is a mandatory parameter" do
@@ -190,5 +194,31 @@ class CategoryTest < ActiveSupport::TestCase
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -100_00, account: @account, category: @category, created_at: movement_date)
 
     assert_equal(@category.available_to_spend_in(beginning_of_month), Money.new(100_00, "EUR"))
+  end
+
+  test ".available_to_spend_in returns the accumulated available_to_spend from previous month" do
+    movement_date = Time.now.utc
+    beginning_of_current_month = movement_date.beginning_of_month
+    beginning_of_previous_month = movement_date.prev_month.beginning_of_month
+
+    movement_1 = Movement.create!(payer: "payer_1", amount_cents: -100_00, account: @account, category: @category, created_at: beginning_of_current_month)
+    movement_from_last_month = Movement.create!(payer: "payer_2", amount_cents: -200_00, account: @account, category: @category, created_at: beginning_of_previous_month)
+
+    assert_equal(@category.available_to_spend_in(beginning_of_current_month), Money.new(-300_00, "EUR"))
+  end
+
+  test ".available_to_spend_in returns the accumulated available_to_spend from previous month minus its monthly assignment" do
+    movement_date = Time.now.utc
+    beginning_of_current_month = movement_date.beginning_of_month
+    beginning_of_previous_month = movement_date.prev_month.beginning_of_month
+
+    movement_1 = Movement.create!(payer: "payer_1", amount_cents: -100_00, account: @account, category: @category, created_at: beginning_of_current_month)
+    movement_from_last_month = Movement.create!(payer: "payer_2", amount_cents: -200_00, account: @account, category: @category, created_at: beginning_of_previous_month)
+    MonthlyAssignment.create!(category: @category,
+                              start_date: beginning_of_current_month,
+                              end_date: beginning_of_current_month.next_month,
+                              amount: Money.new(100_00, "EUR")) 
+
+    assert_equal(@category.available_to_spend_in(beginning_of_current_month), Money.new(-200_00, "EUR"))
   end
 end

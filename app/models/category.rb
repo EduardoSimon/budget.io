@@ -22,7 +22,9 @@ class Category < ApplicationRecord
   end
   
   def available_to_spend_in(current_month)
-    assignment_for_month(current_month).amount - spent_amount_in_month(current_month)
+    @current_month  = current_month
+
+    _available_to_spend_in(@current_month)
   end
 
   def in_spending?(month_date)
@@ -74,5 +76,20 @@ class Category < ApplicationRecord
     return Money.new(0, "EUR") unless stored_assignment
 
     stored_assignment.amount
+  end
+  
+  private 
+
+  def _available_to_spend_in(current_month)
+    assignment_for_month = assignment_for_month(current_month).amount 
+    spent_amount_in_current_month = spent_amount_in_month(current_month) 
+
+    available_to_spend_in_current_month = assignment_for_month - spent_amount_in_current_month
+
+    if assignment_for_month == 0 && spent_amount_in_current_month == 0 && @current_month != current_month
+      return available_to_spend_in_current_month
+    else
+      return available_to_spend_in_current_month + _available_to_spend_in(current_month.prev_month) 
+    end
   end
 end
