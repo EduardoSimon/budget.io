@@ -32,7 +32,10 @@ class Category < ApplicationRecord
   end
 
   def spent_percentage_in_month(month_date)
-    (spent_amount_cents_in_month(month_date).to_f / assigned_amount_in(month_date).cents.to_f) * 100.0
+    assigned_amount_in_month_cents = assigned_amount_in(month_date).cents.to_f
+    return assigned_amount_in_month_cents if assigned_amount_in_month_cents.zero?
+
+    (spent_amount_cents_in_month(month_date).to_f / assigned_amount_in_month_cents ) * 100.0
   end
 
 
