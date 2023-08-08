@@ -2,11 +2,11 @@
 <div class="flex items-center justify-between mb-5">
   <h1 class="main-title"><%= @budget.title %></h1>
   <div class="flex items-center justify-around">
-    <%= link_to "Edit this budget", edit_budget_path(@budget), class: "btn-primary" %>
-    <%= button_to "Destroy this budget", @budget, method: :delete, class: "btn-primary bg-red-600 ml-3" %>
+    <%= link_to "Create movement", movements_new_path(date: @current_month), class: "btn-primary" %>
+    <%= link_to "Edit this budget", edit_budget_path(@budget), class: "btn-primary ml-3" %>
   </div>
 </div>
-<div class="grid grid-cols-2">
+<div class="grid grid-cols-2 gap-4">
   <section class="p-2">
     <div class="flex items-center justify-start mb-2">
       <% if @budget.ready_to_assign.cents > 0 %>
@@ -90,7 +90,7 @@
               </td>
               <%= form_for [movement.account, movement] do |f| %>
                 <td class="px-6 py-4">
-                  <%= f.collection_select(:category_id, @budget.categories, :id, :name, {prompt: true }, { onchange: 'this.form.submit()' }) %>
+                  <%= f.collection_select(:category_id, @budget.categories, :id, :name, {prompt: true }, { onchange: 'this.form.requestSubmit()' }) %>
                   <%= f.hidden_field(:date, { value: @current_month}) %>
                 </td>
               <% end %>

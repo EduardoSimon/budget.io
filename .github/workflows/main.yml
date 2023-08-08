@@ -54,5 +54,8 @@ jobs:
           bundle exec rails db:create
           bundle exec rails db:migrate
 
+      - name: Lint factories
+        run: bundle exec rake factory_bot:lint
+
       - name: Run tests
         run: bin/rails test

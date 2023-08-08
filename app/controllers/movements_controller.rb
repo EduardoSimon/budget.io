@@ -1,5 +1,17 @@
 class MovementsController < ApplicationController
+  before_action :set_account, only: %i[update new create]
   before_action :set_movement, only: %i[update]
+  before_action :set_referrer, only: %i[new]
+  after_action :unset_referrer, only: %i[update create]
+
+  def new
+    date = params[:date]
+    if date
+      @movement = Movement.new(created_at: date)
+    else
+      @movement = Movement.new
+    end
+  end
 
   def update
     respond_to do |format|
@@ -13,12 +25,26 @@ class MovementsController < ApplicationController
     end
   end
 
+  def create
+    @movement = Movement.new(movement_params)
+
+    respond_to do |format|
+      if @movement.save
+        format.html do
+          redirect_to @@referrer || account_url(@account), notice: "Movement was successfully created."
+        end
+      else
+        format.html { render :new, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   def movement_params
     base_params = params
       .require(:movement)
-      .permit(:category_id, :account_id, :created_at, :transfer_to_account_id)
+      .permit(:category_id, :account_id, :created_at, :transfer_to_account_id, :payer, :description, :amount)
 
     return base_params.merge(created_at: @movement.created_at.change(month: selected_month)) if selected_month
 
@@ -38,6 +64,21 @@ class MovementsController < ApplicationController
 
   def set_movement
     @movement = Movement.find(params[:id])
-    @account = Account.find(params[:account_id])
+  end
+
+  def set_account
+    account_id = params[:account_id] || params.dig(:movement, :account_id)
+
+    if account_id
+      @account = Account.find(account_id)
+    end
+  end
+
+  def set_referrer
+    @@referrer = request.referrer
+  end
+
+  def unset_referrer
+    @@referrer = nil
   end
 end
