@@ -51,7 +51,7 @@ class OpenBankingConnector
     raise StandardError.new({message: "balances object was empty", params: main_balance}) if main_balance.nil?
 
     seconds_in_day = 60 * 60 * 24
-    previous_month = Time.now - (seconds_in_day * 30)
+    previous_month = Time.now - (seconds_in_day * 30 * 3)
     get_transactions_response = account.get_transactions(
       date_from: previous_month.strftime("%F"),
       date_to: Time.now.strftime("%F")
