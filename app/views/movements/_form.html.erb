@@ -29,7 +29,7 @@
       </div>
       <div>
         <%= f.label :account, class: "form-label" %>
-        <%= f.collection_select(:account_id, Account.all, :id, :name, {prompt: true }) %>
+        <%= f.collection_select(:account_id, Account.all, :id, :name, {prompt: true }, { class: 'form-input' }) %>
       </div>
       <div>
         <%= f.label :created_at, class: "form-label" %>

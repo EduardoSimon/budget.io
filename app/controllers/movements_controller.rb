@@ -1,5 +1,5 @@
 class MovementsController < ApplicationController
-  before_action :set_account, only: %i[update new create]
+  before_action :set_account, only: %i[update new]
   before_action :set_movement, only: %i[update]
   before_action :set_referrer, only: %i[new]
   after_action :unset_referrer, only: %i[update create]
@@ -31,6 +31,7 @@ class MovementsController < ApplicationController
     respond_to do |format|
       if @movement.save
         format.html do
+          set_account
           redirect_to @@referrer || account_url(@account), notice: "Movement was successfully created."
         end
       else
