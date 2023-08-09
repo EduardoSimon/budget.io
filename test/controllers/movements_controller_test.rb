@@ -27,5 +27,36 @@ class MovementsControllerTest < ActionDispatch::IntegrationTest
      assert_nil date_input['value']
    end
   end
+
+ class ReferrerRedirectionTest < ActionDispatch::IntegrationTest
+   setup do
+     @account = create(:account)
+     @budget = create(:budget)
+   end
+
+   test "when the referrer is not present redirects to account view" do
+     movement_params = attributes_for(:movement)
+     post "/movements",
+       params: {
+         movement: movement_params.merge(account_id: @account.id)
+       }
+
+       assert_redirected_to account_url(@account)
+   end
+   test "when the referrer is present redirects to the referrer path" do
+     movement_params = attributes_for(:movement)
+     get "/movements/new", 
+       headers: {
+         'HTTP_REFERER' => budget_url(@budget)
+       }
+
+     post "/movements",
+       params: {
+         movement: movement_params.merge(account_id: @account.id)
+       }
+
+       assert_redirected_to budget_url(@budget)
+   end
+ end
 end
 
