@@ -34,6 +34,14 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem "nordigen-ruby", "~> 2.1"
+
+gem 'money-rails', '~>1.12'
+
+gem "monetize", "~> 1.12"
+
+gem "tailwindcss-rails", "~> 2.0"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
@@ -67,6 +75,9 @@ group :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
+  # Support solargraph in development
+  gem "solargraph", "~> 0.49.0"
+  gem "rake"
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
   gem "capistrano", "~> 3.17", require: false
@@ -84,11 +95,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+  gem "factory_bot", "~> 6.2"
+  gem "factory_bot_rails", "~> 6.2"
 end
-
-gem "nordigen-ruby", "~> 2.1"
-gem 'money-rails', '~>1.12'
-gem "monetize", "~> 1.12"
-
-gem "tailwindcss-rails", "~> 2.0"
 

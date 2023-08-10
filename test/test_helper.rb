@@ -10,5 +10,6 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  # Add more helper methods to be used by all tests here...
+  # Includes helper method for creating instances: #https://github.com/thoughtbot/factory_bot/wiki/Integration%3A-minitest-rails
+  include FactoryBot::Syntax::Methods
 end
