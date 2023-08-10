@@ -49,6 +49,9 @@ jobs:
       - name: Install deps
         run: bundle install --retry 3
 
+      - name: Precompile assets generating static files
+        run: bundle exec rake assets:precompile
+
       - name: Setup Database
         run: |
           bundle exec rails db:create
