@@ -49,19 +49,14 @@ jobs:
       - name: Install deps
         run: bundle install --retry 3
 
-      - name: Precompile assets generating static files
-        run: bundle exec rake assets:precompile
-
-      - name: Setup Database
-        run: |
-          bundle exec rails db:create
-          bundle exec rails db:migrate
-        env: # Or as an environment variable
+      - name: Prepare environment for running tests
+        run: make test_prepare
+        env:
           OB_CLIENT_ID: ${{ secrets.OB_CLIENT_ID }}
           OB_CLIENT_SECRET: ${{ secrets.OB_CLIENT_SECRET }}
 
-      - name: Lint factories
-        run: bundle exec rake factory_bot:lint
+      - name: Lint project
+        run: make lint
 
       - name: Run tests
-        run: bin/rails test
+        run: make test
