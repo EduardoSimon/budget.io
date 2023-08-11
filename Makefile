@@ -16,7 +16,7 @@ test:
 
 .PHONY: lint
 lint:
-	bundle exdc rake factory_bot:lint
+	bundle exec rake factory_bot:lint
 
 
 
