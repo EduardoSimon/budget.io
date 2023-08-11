@@ -1,5 +1,5 @@
 console:
-	rails c
+	bin/rails c
 
 postgres:
 	psql -U 
@@ -12,7 +12,7 @@ test_prepare:
 
 .PHONY: test
 test:
-	rails t
+	bin/rails t
 
 .PHONY: lint
 lint:
