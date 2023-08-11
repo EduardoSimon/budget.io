@@ -75,7 +75,7 @@ GEM
     bcrypt_pbkdf (1.1.0)
     benchmark (0.2.1)
     bindex (0.8.1)
-    bootsnap (1.15.0)
+    bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
     capistrano (3.17.2)
@@ -171,7 +171,7 @@ GEM
       monetize (~> 1.9)
       money (~> 6.13)
       railties (>= 3.0)
-    msgpack (1.6.0)
+    msgpack (1.7.2)
     net-imap (0.3.4)
       date
       net-protocol
