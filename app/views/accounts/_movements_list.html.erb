@@ -37,9 +37,10 @@
           <td class="px-6 py-4">
             <%= humanized_money_with_symbol movement.amount %>
           </td>
-          <%= form_for [@account, movement] do |f| %>
             <td class="px-6 py-4">
-              <%= f.collection_select(:category_id, Category.all, :id, :name,  { prompt: true }, { onchange: 'this.form.requestSubmit()' }) %>
+              <%= form_for [@account, movement] do |f| %>
+                <%= f.collection_select(:category_id, Category.all, :id, :name,  { prompt: true }, { onchange: 'this.form.requestSubmit()' }) %>
+              <% end %>
             </td>
             <td class="px-6 py-4">
             <% if !movement.transfer_to_account_id.nil? && movement.transfer_to_account_id != @account.id %>
@@ -51,7 +52,9 @@
             <% end %>
             </td>
             <td class="flex items-center justify-between px-6 py-4">
-              <%= f.collection_select(:transfer_to_account_id, Account.all, :id, :name, { prompt: true, include_blank: true }, { onchange: 'this.form.requestSubmit()' }) %>
+              <%= form_for [@account, movement] do |f| %>
+                <%= f.collection_select(:transfer_to_account_id, Account.where.not(id: @account.id), :id, :name, { include_blank: true }, { onchange: 'this.form.requestSubmit()' }) %>
+              <% end %>
               <% if !movement.transfer_to_account_id.nil? && movement.transfer_to_account_id != @account.id %>
                 <%= link_to "See account", account_path(movement.transfer_to_account_id) %> 
               <% end %>
@@ -59,7 +62,6 @@
             <td class="px-6 py-4">
               <%= time_tag movement.created_at %>
             </td>
-          <% end %>
         </tr>
       <% end %>
     </tbody>

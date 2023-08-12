@@ -88,21 +88,21 @@
               <td class="px-6 py-4">
                 <%= humanized_money_with_symbol movement.amount %>
               </td>
-              <%= form_for [movement.account, movement] do |f| %>
-                <td class="px-6 py-4">
-                  <%= f.collection_select(:category_id, @budget.categories, :id, :name, {prompt: true }, { onchange: 'this.form.requestSubmit()' }) %>
+              <td class="px-6 py-4">
+                <%= form_for [movement.account, movement] do |f| %>
+                  <%= f.collection_select(:category_id, @budget.categories, :id, :name, { prompt: true }, { onchange: "this.form.requestSubmit()"}) %>
                   <%= f.hidden_field(:date, { value: @current_month}) %>
-                </td>
-              <% end %>
+                <% end %>
+              </td>
               <td class="px-6 py-4">
                 <%= movement.account.name %>
               </td>
-              <%= form_for [movement.account, movement] do |f| %>
-                <td class="px-6 py-4">
+              <td class="px-6 py-4">
+                <%= form_for [movement.account, movement] do |f| %>
                   <%= f.collection_select(:transfer_to_account_id, @budget.accounts, :id, :name, {prompt: true }, { onchange: 'this.form.requestSubmit()' }) %>
                   <%= f.hidden_field(:date, { value: @current_month}) %>
-                </td>
-              <% end %>
+                <% end %>
+              </td>
               <td class="px-6 py-4">
                 <%= time_tag movement.created_at %>
               </td>
