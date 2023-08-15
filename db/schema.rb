@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_27_110534) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_15_111552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_110534) do
     t.bigint "institution_id"
     t.string "external_account_id"
     t.bigint "budget_id"
-    t.decimal "balance", precision: 8, scale: 2
+    t.decimal "reported_balance", precision: 8, scale: 2
     t.index ["budget_id"], name: "index_accounts_on_budget_id"
     t.index ["institution_id"], name: "index_accounts_on_institution_id"
   end
