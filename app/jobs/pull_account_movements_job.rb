@@ -9,7 +9,8 @@ class PullAccountMovementsJob < ApplicationJob
       external_account_id: account.external_account_id
     )
 
-    account.update!(balance: result.balance)
+    reported_balance = Money.new(result.balance * 100, "EUR")
+    account.update!(reported_balance: reported_balance)
 
     result.transactions.each do |t|
       Rails.logger.info(t)
