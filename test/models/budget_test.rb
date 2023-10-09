@@ -12,7 +12,7 @@ class BudgetTest < ActiveSupport::TestCase
     categories = budget.categories.all
 
     assert_equal(categories.length, 2)
-    assert_equal(budget.categories.find_by(name: 'test').id, category.id)
+    assert_equal(budget.categories.find_by(name: "test").id, category.id)
   end
 
   test "has a collection of accounts" do
@@ -36,14 +36,14 @@ class BudgetTest < ActiveSupport::TestCase
       movement_amount_cents = 10000
 
       movement_1 = Movement.create!(account: @account,
-                                    amount_cents: movement_amount_cents,
-                                    payer: "with category")
+        amount_cents: movement_amount_cents,
+        payer: "with category")
       movement_2 = Movement.create!(account: @account,
-                                    amount_cents: movement_amount_cents,
-                                    payer: "with category",
-                                    created_at: @month.next_month)
+        amount_cents: movement_amount_cents,
+        payer: "with category",
+        created_at: @month.next_month)
 
-      assert_includes @budget.uncategorized_movements_in(@month), movement_1 
+      assert_includes @budget.uncategorized_movements_in(@month), movement_1
       assert_not_includes @budget.uncategorized_movements_in(@month), movement_2
     end
 
@@ -51,15 +51,15 @@ class BudgetTest < ActiveSupport::TestCase
       movement_amount_cents = 10000
 
       movement_1 = Movement.create!(account: @account,
-                                    amount_cents: movement_amount_cents,
-                                    payer: "transfer",
-                                    transfer_to_account_id: @another_account.id)
+        amount_cents: movement_amount_cents,
+        payer: "transfer",
+        transfer_to_account_id: @another_account.id)
       movement_2 = Movement.create!(account: @account,
-                                    amount_cents: movement_amount_cents,
-                                    payer: "with category")
+        amount_cents: movement_amount_cents,
+        payer: "with category")
 
       assert_not_includes @budget.uncategorized_movements_in(@month), movement_1
-      assert_includes @budget.uncategorized_movements_in(@month), movement_2 
+      assert_includes @budget.uncategorized_movements_in(@month), movement_2
     end
   end
 
@@ -72,43 +72,39 @@ class BudgetTest < ActiveSupport::TestCase
     )
   end
 
-
   test "ready to assign amount is the sum of movements in ready to assign category minus the sum of assigned amounts in categories" do
     movement_amount_cents = 10000
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 
-
     institution = institutions(:revolut)
     budget = Budget.create(title: "test")
     category = Category.create(name: "test", budget_id: budget.id)
-    MonthlyAssignment.create!(category: category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(10000, "EUR")) 
+    MonthlyAssignment.create!(category: category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(10000, "EUR"))
 
     account = Account.create!(budget: budget, institution: institution)
     Movement.create!(account: account, category_id: budget.ready_to_assign_category_id,
-                     amount_cents: movement_amount_cents, payer: "with category", created_at: beginning_of_month)
+      amount_cents: movement_amount_cents, payer: "with category", created_at: beginning_of_month)
     Movement.create!(account: account, category_id: budget.ready_to_assign_category_id,
-                     amount_cents: movement_amount_cents, payer: "with category", created_at: beginning_of_month)
+      amount_cents: movement_amount_cents, payer: "with category", created_at: beginning_of_month)
     Movement.create!(account: account, amount_cents: movement_amount_cents,
-                     payer: "without category", created_at: beginning_of_month)
+      payer: "without category", created_at: beginning_of_month)
 
     assert_equal(10000, budget.ready_to_assign.cents)
   end
 
-  test "needs_reconciliation? returns true when an reported balance mismatches with the computed one from the budget" do
+  test "needs_reconciliation? returns true when a reported balance mismatches with the budget's one" do
     budget = create(:budget)
-    account = create(:account, reported_balance: 50, budget: budget)
-    account_2 = create(:account, reported_balance: 40, budget: budget)
-    movement = create_list(:movement, 2, amount: Money.new(2000, 'EUR'), account: account)
+    account = create(:account, reported_balance: Money.new(50_00, "EUR"), budget: budget)
+    create_list(:movement, 2, amount: Money.new(20_00, "EUR"), account: account)
 
     assert(budget.needs_reconciliation?)
   end
 
-  test "needs_reconciliation? returns false when there is no mismatch between the reported balance and the computed balance" do
+  test "needs_reconciliation? returns false when no reported balance mismatches with the budget's one" do
     budget = create(:budget)
-    account = create(:account, reported_balance: 40, budget: budget)
-    account_2 = create(:account, reported_balance: 40, budget: budget)
-    movement = create_list(:movement, 2, amount: Money.new(2000, 'EUR'), account: account)
+    account = create(:account, reported_balance: Money.new(40_00, "EUR"), budget: budget)
+    create_list(:movement, 2, amount: Money.new(20_00, "EUR"), account: account)
 
     assert_equal(false, budget.needs_reconciliation?)
   end
