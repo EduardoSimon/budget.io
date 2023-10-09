@@ -31,6 +31,15 @@ Use a ruby dependency manager like rbenv or asdf. The supported ruby version is 
 
 `rails s`
 
+
+# Testing
+
+`make test`
+
+# Linting
+
+`make lint`
+
 # Domain
 
 ✅ A `budget` is a collection of `categories`.
