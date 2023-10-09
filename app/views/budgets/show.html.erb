@@ -1,8 +1,21 @@
 <p style="color: green"><%= notice %></p>
 <div class="flex items-center justify-between mb-5">
   <h1 class="main-title"><%= @budget.title %></h1>
+  <% if @budget.needs_reconciliation?%>
+  <div id="alert-1" class="flex p-4 max-w-lg rounded-lg bg-amber-50 text-amber-700 items-center" role="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+      <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+    </svg>
+    <span class="sr-only">Info</span>
+    <p class="ml-3 text-sm font-medium" data-testid=>
+      There's a mismatch in your any of the 
+      <span> <%= link_to "budget's accounts.", accounts_path, class: 'underline hover:text-amber-800' %></span>
+      You may need to reconcile it.
+    </p>
+  </div>
+  <% end %>
   <div class="flex items-center justify-around">
-    <%= link_to "Create movement", movements_new_path(date: @current_month), class: "btn-primary" %>
+    <%= link_to "Create movement", movements_new_path({ movement: { created_at: @current_month }}), class: "btn-primary" %>
     <%= link_to "Edit this budget", edit_budget_path(@budget), class: "btn-primary ml-3" %>
   </div>
 </div>
@@ -37,7 +50,7 @@
                            onchange: 'this.form.requestSubmit()',
                            class: 'rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-5 '
                          }) %>
-                     <% end %>
+      <% end %>
     </div>
     <div class="flex items-center mb-2">
       <h3 class="subtitle flex-1 min-w-[70%]">Categories</h3>

@@ -94,4 +94,22 @@ class BudgetTest < ActiveSupport::TestCase
 
     assert_equal(10000, budget.ready_to_assign.cents)
   end
+
+  test "needs_reconciliation? returns true when an reported balance mismatches with the computed one from the budget" do
+    budget = create(:budget)
+    account = create(:account, reported_balance: 50, budget: budget)
+    account_2 = create(:account, reported_balance: 40, budget: budget)
+    movement = create_list(:movement, 2, amount: Money.new(2000, 'EUR'), account: account)
+
+    assert(budget.needs_reconciliation?)
+  end
+
+  test "needs_reconciliation? returns false when there is no mismatch between the reported balance and the computed balance" do
+    budget = create(:budget)
+    account = create(:account, reported_balance: 40, budget: budget)
+    account_2 = create(:account, reported_balance: 40, budget: budget)
+    movement = create_list(:movement, 2, amount: Money.new(2000, 'EUR'), account: account)
+
+    assert_equal(false, budget.needs_reconciliation?)
+  end
 end

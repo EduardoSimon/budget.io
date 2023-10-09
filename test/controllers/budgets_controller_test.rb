@@ -2,7 +2,7 @@ require "test_helper"
 
 class BudgetsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @budget = Budget.create!(title: 'test')
+    @budget = Budget.create!(title: "test")
   end
 
   test "should get index" do
@@ -44,5 +44,28 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to budgets_url
+  end
+  class ShowBudgetTests < ActionDispatch::IntegrationTest
+    setup do
+      @budget = Budget.create!(title: "test")
+    end
+
+    test "given a budget with accounts that need to be reconciled" do
+      account = create(:account, budget_id: @budget.id, reported_balance: Money.new("2000_00", "EUR"))
+      create(:movement, amount: Money.new("3000_00", "EUR"), account_id: account.id)
+
+      get budget_url(@budget)
+      assert_select "p", /There's a mismatch in your any of the/
+      assert_select "a[href=\"/accounts\"]"
+    end
+
+    test "given a budget with accounts that need DO NOT need to be reconciled" do
+      account = create(:account, budget_id: @budget.id, reported_balance: Money.new("3000_00", "EUR"))
+      create(:movement, amount: Money.new("3000_00", "EUR"), account_id: account.id)
+
+      get budget_url(@budget)
+      assert_select "p", {count: 0, text: /There's a mismatch in your any of the/}
+      assert_select "a", {count: 0, text: "a[href=\"/accounts\"]"}
+    end
   end
 end
