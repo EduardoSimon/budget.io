@@ -5,7 +5,7 @@ class OpenBankingConnector
     end
   end
 
-  Account = Struct.new(:transactions, :balance, keyword_init: true)
+  AccountResponse = Struct.new(:transactions, :balance, :currency, keyword_init: true)
 
   def fetch_institutions_by_country(country)
     client.institution.get_institutions(country).map(&:deep_symbolize_keys)
@@ -75,7 +75,7 @@ class OpenBankingConnector
       }
     end
 
-    Account.new(transactions: transactions, balance: main_balance["amount"])
+    AccountResponse.new(transactions: transactions, balance: main_balance["amount"], currency: main_balance['currency'])
   end
 
   def client
