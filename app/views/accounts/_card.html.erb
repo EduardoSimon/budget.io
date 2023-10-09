@@ -1,6 +1,25 @@
     <!-- Dropdown menu -->
-<div id="<%= dom_id account %> "class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-  <div class="flex justify-end px-4 pt-4">
+<div id="<%= dom_id account %> "class="p-4 w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+  
+<% if (account.reported_balance.cents.abs - account.balance.cents.abs) != 0 %>
+ <div id="alert-additional-content-4" class="p-4 mb-4 text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800" role="alert">
+  <div class="flex items-center">
+    <svg class="flex-shrink-0 w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+    </svg>
+    <span class="sr-only">Info</span>
+    <h3 class="text-lg font-medium">There's a balances mismatch</h3>
+  </div>
+  <p class="mt-2 mb-4 text-sm">Your account needs to be reconcile to match the reported balance and the computed balance.</p>
+  <p class="mt-2 mb-4 text-sm">Reported balance: <%= humanized_money_with_symbol account.reported_balance %></p>
+  <p class="mt-2 mb-4 text-sm">Compute balance: <%= humanized_money_with_symbol account.balance %></p>
+  <div class="flex justify-end">
+    <%= link_to "Reconcile", movements_new_path({ movement: { created_at: @current_month, account_id: account.id, amount: Money.new(account.reported_balance.cents - account.balance.cents, "EUR"), description: 'Renconciliation movement', payer: 'Reconciliation movement' }}), class: "text-white bg-yellow-800 hover:bg-yellow-900 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center dark:bg-yellow-300 dark:text-gray-800 dark:hover:bg-yellow-400 dark:focus:ring-yellow-800" %>
+  </div>
+ </div>
+<% end %>
+
+ <div class="flex justify-end px-4 pt-4">
     <button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
       <span class="sr-only">Open dropdown</span>
       <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
