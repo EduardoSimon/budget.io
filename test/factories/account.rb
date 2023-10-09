@@ -5,7 +5,7 @@ FactoryBot.define do
     sequence(:external_account_id) do |n|
        "external_account_#{n}"
     end
-    balance { 2000.20 }
+    reported_balance { 2000 }
     budget
     institution
   end

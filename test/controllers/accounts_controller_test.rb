@@ -47,4 +47,27 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to accounts_url
   end
+
+  class ShowAccountsTest < ActionDispatch::IntegrationTest
+    test "given an account that needs to be reconciled shows a notice with a button to reconcile the movement" do
+      account = create(:account, reported_balance: Money.new("2000_00", "EUR"))
+      create(:movement, amount: Money.new("3000_00", "EUR"), account_id: account.id)
+
+      get accounts_url
+      assert_select "p", /Your account needs to be reconcile to match the reported balance and the computed balance./
+      assert_select "p", /Reported balance: €2,000/
+      assert_select "p", /Compute balance: €3,000/
+      assert_select "a", href: /\/movements\/new/
+    end
+
+    test "given an account that DOES NOT need to be reconciled DO NOT show a notice with a button to reconcile the movement" do
+      account = create(:account, reported_balance: Money.new("2000_00", "EUR"))
+      create(:movement, amount: Money.new("2000_00", "EUR"), account_id: account.id)
+
+      get accounts_url
+      assert_select "p", {count: 0, text: /Your account needs to be reconcile to match the reported balance and the computed balance./}
+      assert_select "p", {count: 0, text: /Reported balance: €2,000/}
+      assert_select "p", {count: 0, text: /Compute balance: €3,000/}
+    end
+  end
 end

@@ -8,10 +8,7 @@ gem "rails", "~> 7.0.4"
 gem "dotenv-rails", groups: [:development, :test, :production]
 
 # Allow whitelisting other domains when redirecting
-gem 'rack-cors'
-
-# Linter
-gem "standard", group: [:development, :test]
+gem "rack-cors"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -36,7 +33,7 @@ gem "jbuilder"
 
 gem "nordigen-ruby", "~> 2.1"
 
-gem 'money-rails', '~>1.12'
+gem "money-rails", "~>1.12"
 
 gem "monetize", "~> 1.12"
 
@@ -66,6 +63,7 @@ gem "bootsnap", require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri mingw x64_mingw]
+  gem "standard", "~> 1.24"
 end
 
 group :development do
@@ -75,8 +73,7 @@ group :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
-  # Support solargraph in development
-  gem "solargraph", "~> 0.49.0"
+  gem "solargraph"
   gem "rake"
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
@@ -84,9 +81,9 @@ group :development do
   gem "capistrano-rails", "~> 1.6", require: false
   gem "ed25519", require: false
   gem "bcrypt_pbkdf", require: false
-  gem 'capistrano-rbenv', require: false
-  gem 'capistrano3-puma',   require: false
-  gem 'capistrano-bundler', require: false
+  gem "capistrano-rbenv", require: false
+  gem "capistrano3-puma", require: false
+  gem "capistrano-bundler", require: false
   gem "capistrano-dotenv", "~> 0.0.5", require: false
 end
 

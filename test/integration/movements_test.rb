@@ -8,7 +8,7 @@ class MovementsTest < ActionDispatch::IntegrationTest
   test "a movement can be created" do
     movement_params = attributes_for(:movement)
 
-    get "/movements/new"
+    get "/movements/new", params: {movement: {created_at: nil}}
 
     assert_response :success
     post "/movements",
