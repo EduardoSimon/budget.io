@@ -10,7 +10,7 @@ class MovementsControllerTest < ActionDispatch::IntegrationTest
  class DateInPartialTest < BaseTestClass
    test "when date is provided renders the 'new' partial with it" do
      date = Date.today.prev_month
-     get "/movements/new", params: { date: date  }
+     get "/movements/new", params: { movement: { created_at: date  } }
 
      assert_response :success
 
@@ -64,6 +64,7 @@ class MovementsControllerTest < ActionDispatch::IntegrationTest
      assert_redirected_to budget_url(@budget)
    end
  end
+
  class ViewTests < BaseTestClass
    test "shows an error for every required parameter" do
      post "/movements", params: { movement: { payer: nil, description: nil, account_id: nil} }
