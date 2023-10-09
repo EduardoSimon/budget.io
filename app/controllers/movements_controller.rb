@@ -40,7 +40,7 @@ class MovementsController < ApplicationController
   def movement_params
     base_params = params
       .require(:movement)
-      .permit(:category_id, :account_id, :created_at, :transfer_to_account_id, :payer, :description, :amount)
+      .permit(:category_id, :account_id, :created_at, :transfer_to_account_id, :payer, :description, :amount_cents, :amount_currency, :amount)
 
     return base_params.merge(created_at: @movement.created_at.change(month: selected_month)) if selected_month
 
