@@ -19,9 +19,27 @@ class MockClient
       })
     end
     OpenBankingConnector::AccountResponse.new(
-      transactions: transactions,
+      transactions: Stubs.transactions,
       balance: 500.00,
       currency: "EUR"
     )
+  end
+
+  class Stubs
+    class << self
+      def transactions
+        transactions = []
+        2.times do |i|
+          transactions.push({
+            "transactionId" => i,
+            "bookingDate" => "2023-07-24",
+            "transactionAmount" => {"amount" => ((i + 1) * 100.0).to_s, "currency" => "EUR"},
+            "remittanceInformationUnstructured" => "Pago en EL CORTE INGLES"
+          })
+        end
+        pp transactions
+        transactions
+      end
+    end
   end
 end
