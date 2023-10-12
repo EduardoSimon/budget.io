@@ -5,7 +5,7 @@ class MovementsController < ApplicationController
   after_action :unset_referrer, only: %i[update create]
 
   def new
-      @movement = Movement.new(**movement_params)
+    @movement = Movement.new(**movement_params)
   end
 
   def update
@@ -48,14 +48,14 @@ class MovementsController < ApplicationController
   end
 
   def redirect_destination
-    return budget_url(@account.budget, date: { month: selected_month }) if selected_month
-    return account_url(@movement.account)
+    return budget_url(@account.budget, date: {month: selected_month}) if selected_month
+    account_url(@movement.account)
   end
-  
-  def selected_month
-    return nil if params.dig(:movement,:date).nil?
 
-    DateTime.strptime(params[:movement][:date], '%F').month
+  def selected_month
+    return nil if params.dig(:movement, :date).nil?
+
+    DateTime.strptime(params[:movement][:date], "%F").month
   end
 
   def set_movement

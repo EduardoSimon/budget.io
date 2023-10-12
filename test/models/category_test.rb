@@ -4,7 +4,7 @@ class CategoryTest < ActiveSupport::TestCase
   setup do
     @budget = budgets(:empty)
     @account = accounts(:one)
-    @category = Category.create!(name: 'test', budget: @budget)
+    @category = Category.create!(name: "test", budget: @budget)
   end
 
   teardown do
@@ -26,7 +26,7 @@ class CategoryTest < ActiveSupport::TestCase
 
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
     movement_2 = Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(60000, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(60000, "EUR"))
 
     @category.update!(target_amount_cents: 50000)
 
@@ -39,7 +39,7 @@ class CategoryTest < ActiveSupport::TestCase
 
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
     movement_2 = Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(50000, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(50000, "EUR"))
 
     @category.update!(target_amount_cents: 50000)
 
@@ -59,23 +59,23 @@ class CategoryTest < ActiveSupport::TestCase
   end
 
   test "overspent? returns true when the spent amount is GREATER than the assigned amount in a month" do
-    movement_date = Time.now.utc 
+    movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
     movement_2 = Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(10000, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(10000, "EUR"))
 
     assert_equal(@category.overspent?(beginning_of_month), true)
   end
 
   test "overspent? returns false when the spent amount is SMALLER than the assigned amount in a month" do
-    movement_date = Time.now.utc 
+    movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
     movement_2 = Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(40000, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(40000, "EUR"))
 
     assert_equal(@category.overspent?(beginning_of_month), false)
   end
@@ -86,27 +86,27 @@ class CategoryTest < ActiveSupport::TestCase
 
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
     movement_2 = Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(20000, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(20000, "EUR"))
 
     assert_equal(@category.overspent?(beginning_of_month), false)
   end
 
-  test "overspent? returns false when the target_amount is 0 and the assignment is 0 and activity is greater than 0"  do
+  test "overspent? returns false when the target_amount is 0 and the assignment is 0 and activity is greater than 0" do
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 
     @category.update!(target_amount_cents: 0)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(0, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(0, "EUR"))
 
     assert_equal(@category.overspent?(beginning_of_month), false)
   end
 
-  test "overspent? returns true true the target_amount is 0 and the assignment is 0 and activity is greater than 0"  do
+  test "overspent? returns true true the target_amount is 0 and the assignment is 0 and activity is greater than 0" do
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 
     @category.update!(target_amount_cents: 0)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(0, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(0, "EUR"))
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
 
     assert_equal(@category.overspent?(beginning_of_month), true)
@@ -118,7 +118,7 @@ class CategoryTest < ActiveSupport::TestCase
 
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
     movement_2 = Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(30000, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(30000, "EUR"))
 
     assert_equal(@category.spent_percentage_in_month(beginning_of_month), (20000.to_f / 30000.to_f) * 100)
   end
@@ -129,7 +129,7 @@ class CategoryTest < ActiveSupport::TestCase
 
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
     movement_2 = Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(0, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(0, "EUR"))
 
     assert_equal(@category.spent_percentage_in_month(beginning_of_month), 0.0)
   end
@@ -140,7 +140,7 @@ class CategoryTest < ActiveSupport::TestCase
 
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
     movement_2 = Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(30000, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(30000, "EUR"))
 
     assert_equal(@category.in_spending?(beginning_of_month), true)
   end
@@ -151,7 +151,7 @@ class CategoryTest < ActiveSupport::TestCase
 
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
     movement_2 = Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(20000, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(20000, "EUR"))
 
     assert_equal(@category.in_spending?(beginning_of_month), false)
   end
@@ -162,7 +162,7 @@ class CategoryTest < ActiveSupport::TestCase
 
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -100_00, account: @account, category: @category, created_at: movement_date)
     movement_2 = Movement.create!(payer: "payer_2", amount_cents: 50_00, account: @account, category: @category, created_at: movement_date)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(20000, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(20000, "EUR"))
 
     assert_equal(@category.spent_amount_in_month(beginning_of_month), Money.new(50_00, "EUR"))
   end
@@ -171,17 +171,16 @@ class CategoryTest < ActiveSupport::TestCase
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(20000, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(20000, "EUR"))
 
     assert_equal(@category.spent_amount_in_month(beginning_of_month), Money.new(0, "EUR"))
   end
-
 
   test ".fully_spent? returns true when spent amount equals assigned_amount" do
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(200_00, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(200_00, "EUR"))
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -200_00, account: @account, category: @category, created_at: movement_date)
 
     assert_equal(@category.fully_spent?(beginning_of_month), true)
@@ -191,7 +190,7 @@ class CategoryTest < ActiveSupport::TestCase
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(200_00, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(200_00, "EUR"))
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -300_00, account: @account, category: @category, created_at: movement_date)
 
     assert_equal(@category.fully_spent?(beginning_of_month), false)
@@ -201,7 +200,7 @@ class CategoryTest < ActiveSupport::TestCase
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(200_00, "EUR")) 
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(200_00, "EUR"))
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -100_00, account: @account, category: @category, created_at: movement_date)
 
     assert_equal(@category.available_to_spend_in(beginning_of_month), Money.new(100_00, "EUR"))
@@ -226,9 +225,9 @@ class CategoryTest < ActiveSupport::TestCase
     movement_1 = Movement.create!(payer: "payer_1", amount_cents: -100_00, account: @account, category: @category, created_at: beginning_of_current_month)
     movement_from_last_month = Movement.create!(payer: "payer_2", amount_cents: -200_00, account: @account, category: @category, created_at: beginning_of_previous_month)
     MonthlyAssignment.create!(category: @category,
-                              start_date: beginning_of_current_month,
-                              end_date: beginning_of_current_month.next_month,
-                              amount: Money.new(100_00, "EUR")) 
+      start_date: beginning_of_current_month,
+      end_date: beginning_of_current_month.next_month,
+      amount: Money.new(100_00, "EUR"))
 
     assert_equal(@category.available_to_spend_in(beginning_of_current_month), Money.new(-200_00, "EUR"))
   end

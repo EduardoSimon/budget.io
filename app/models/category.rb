@@ -20,9 +20,9 @@ class Category < ApplicationRecord
 
     spent_amount_cents > assigned_amount_in(current_month).cents
   end
-  
+
   def available_to_spend_in(current_month)
-    @current_month  = current_month
+    @current_month = current_month
 
     _available_to_spend_in(@current_month)
   end
@@ -35,9 +35,8 @@ class Category < ApplicationRecord
     assigned_amount_in_month_cents = assigned_amount_in(month_date).cents.to_f
     return assigned_amount_in_month_cents if assigned_amount_in_month_cents.zero?
 
-    (spent_amount_cents_in_month(month_date).to_f / assigned_amount_in_month_cents ) * 100.0
+    (spent_amount_cents_in_month(month_date).to_f / assigned_amount_in_month_cents) * 100.0
   end
-
 
   def spent_amount_in_month(month_date)
     Money.new(spent_amount_cents_in_month(month_date), movements.first&.amount_currency || "EUR")
@@ -49,7 +48,7 @@ class Category < ApplicationRecord
 
       movements
         .between_dates(month_date.beginning_of_month, next_month_date)
-        .sum(:amount_cents) * -1  || 0
+        .sum(:amount_cents) * -1 || 0
     else
       movements.sum(:amount_cents) * -1 || 0
     end
@@ -65,34 +64,34 @@ class Category < ApplicationRecord
     stored_assignment = monthly_assignments.between_dates(month_date, next_month_date).order(:start_date).first
 
     if !stored_assignment
-      return MonthlyAssignment.create!(category_id: id, amount_cents: 0, amount_currency: 'EUR', start_date: month_date,end_date: next_month_date)
+      return MonthlyAssignment.create!(category_id: id, amount_cents: 0, amount_currency: "EUR", start_date: month_date, end_date: next_month_date)
     end
 
-    return stored_assignment
+    stored_assignment
   end
 
   def assigned_amount_in(month_date)
     next_month_date = month_date.beginning_of_month.next_month
 
     stored_assignment = monthly_assignments.between_dates(month_date, next_month_date).first
-    
+
     return Money.new(0, "EUR") unless stored_assignment
 
     stored_assignment.amount
   end
-  
-  private 
+
+  private
 
   def _available_to_spend_in(current_month)
-    assignment_for_month = assignment_for_month(current_month).amount 
-    spent_amount_in_current_month = spent_amount_in_month(current_month) 
+    assignment_for_month = assignment_for_month(current_month).amount
+    spent_amount_in_current_month = spent_amount_in_month(current_month)
 
     available_to_spend_in_current_month = assignment_for_month - spent_amount_in_current_month
 
     if assignment_for_month == 0 && spent_amount_in_current_month == 0 && @current_month != current_month
-      return available_to_spend_in_current_month
+      available_to_spend_in_current_month
     else
-      return available_to_spend_in_current_month + _available_to_spend_in(current_month.prev_month) 
+      available_to_spend_in_current_month + _available_to_spend_in(current_month.prev_month)
     end
   end
 end

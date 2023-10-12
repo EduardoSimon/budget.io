@@ -64,13 +64,13 @@ class MovementTest < ActiveSupport::TestCase
     another_account = accounts(:two)
     movement_amount = -1500
     contra_movement = Movement.create!(account_id: another_account.id,
-                                       payer: "payer",
-                                       amount_cents: movement_amount * -1)
+      payer: "payer",
+      amount_cents: movement_amount * -1)
     movement = Movement.create!(account_id: @account.id,
-                                transfer_to_account_id: another_account.id,
-                                payer: "payer",
-                                amount_cents: movement_amount,
-                                contra_movement_id: contra_movement.id)
+      transfer_to_account_id: another_account.id,
+      payer: "payer",
+      amount_cents: movement_amount,
+      contra_movement_id: contra_movement.id)
 
     assert_no_difference("Movement.count") do
       movement.update!(transfer_to_account_id: another_account.id)

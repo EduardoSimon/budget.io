@@ -20,12 +20,12 @@ class Movement < ApplicationRecord
   end
 
   private
-  
+
   def create_associated_movement_if_set_as_transfer
     if transfer? && !contra_movement_stored?
       cloned_attributes = attributes.with_indifferent_access
         .merge(amount_cents: amount_cents * -1, account_id: transfer_to_account_id)
-        .except(:id,:transfer_to_account_id)
+        .except(:id, :transfer_to_account_id)
       contra_movement = Movement.create!(cloned_attributes)
       self.contra_movement_id = contra_movement.id
     end

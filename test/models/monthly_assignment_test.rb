@@ -28,16 +28,16 @@ class MonthlyAssignmentTest < ActiveSupport::TestCase
   end
 
   test "start_date needs to be smaller than end_date" do
-    start_date = Date.new(2023,2,1)
-    end_date = Date.new(2023,1,1)
+    start_date = Date.new(2023, 2, 1)
+    end_date = Date.new(2023, 1, 1)
     assignment = MonthlyAssignment.create(
       category: @category,
       amount: Money.new(100, "EUR"),
-      start_date: start_date, 
+      start_date: start_date,
       end_date: end_date
     )
 
     assert_equal assignment.errors[:end_date],
-      ["must be greater than #{start_date.strftime('%F')}"]
+      ["must be greater than #{start_date.strftime("%F")}"]
   end
 end

@@ -18,7 +18,6 @@ class MonthlyAssignmentsController < ApplicationController
   def update
     @assignment = MonthlyAssignment.find(params[:id])
 
-
     respond_to do |format|
       if @assignment.update!(assignment_params)
         format.json { render :show, status: :ok, location: @assignment }
@@ -31,6 +30,6 @@ class MonthlyAssignmentsController < ApplicationController
   private
 
   def assignment_params
-    params.permit(:amount_cents,:end_date, :start_date)
+    params.permit(:amount_cents, :end_date, :start_date)
   end
 end
