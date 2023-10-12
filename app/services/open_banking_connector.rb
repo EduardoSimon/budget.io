@@ -36,7 +36,11 @@ class OpenBankingConnector
   def fetch_movements(external_account_id:)
     account = client.account(external_account_id)
 
-    balances = account.get_balances["balances"]
+    balances_response = account.get_balances.deep_symbolize_keys
+
+    raise StandardError.new(balances_response.to_json) if balances_response[:status_code] && balances_response[:status_code] >= 400
+
+    balances = balances_response[:balances]
 
     Rails.logger.info({
       balances: balances,
@@ -46,36 +50,34 @@ class OpenBankingConnector
 
     raise StandardError.new("balances object is nil in account") if balances.nil?
 
-    main_balance = balances.first["balanceAmount"]
+    main_balance = balances.first[:balanceAmount]
 
     raise StandardError.new({message: "balances object was empty", params: main_balance}) if main_balance.nil?
 
     seconds_in_day = 60 * 60 * 24
-    previous_month = Time.now - (seconds_in_day * 30 * 3)
+    previous_month = Time.now - (seconds_in_day * 30 * 4)
     get_transactions_response = account.get_transactions(
       date_from: previous_month.strftime("%F"),
       date_to: Time.now.strftime("%F")
-    )
+    ).deep_symbolize_keys
 
-    Rails.logger.info(get_transactions_response)
-
-    transactions = get_transactions_response["transactions"]
+    transactions = get_transactions_response[:transactions]
     raise StandardError.new({message: "No transactions object found"}) unless transactions
 
-    booked_transactions = transactions["booked"]
+    booked_transactions = transactions[:booked]
     raise StandardError.new({message: "No booked transactions object found"}) unless booked_transactions
 
     transactions = booked_transactions.map do |t|
       {
-        id: t["transactionId"],
-        date: t["bookingDate"],
-        amount: t["transactionAmount"]["amount"].to_money,
-        payer: t["debtorName"],
-        description: t["remittanceInformationUnstructured"]
+        id: t[:transactionId],
+        date: t[:bookingDate],
+        amount: t[:transactionAmount][:amount].to_f,
+        payer: t[:debtorName],
+        description: t[:remittanceInformationUnstructured]
       }
     end
 
-    AccountResponse.new(transactions: transactions, balance: main_balance["amount"], currency: main_balance['currency'])
+    AccountResponse.new(transactions: transactions, balance: main_balance[:amount].to_f, currency: main_balance[:currency])
   end
 
   def client

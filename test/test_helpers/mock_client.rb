@@ -24,4 +24,21 @@ class MockClient
       currency: "EUR"
     )
   end
+
+  class Stubs
+    class << self
+      def transactions
+        transactions = []
+        2.times do |i|
+          transactions.push({
+            "transactionId" => i,
+            "bookingDate" => "2023-07-24",
+            "transactionAmount" => {"amount" => ((i + 1) * 100.0).to_s, "currency" => "EUR"},
+            "remittanceInformationUnstructured" => "Pago en EL CORTE INGLES"
+          })
+        end
+        transactions
+      end
+    end
+  end
 end

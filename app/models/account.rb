@@ -6,6 +6,8 @@ class Account < ApplicationRecord
   monetize :reported_balance_cents
 
   def authenticated?
+    ## TODO improve logic here to check status of current agreement
+    ## https://github.com/EduardoSimon/budget.io/issues/25
     external_account_id.present?
   end
 
