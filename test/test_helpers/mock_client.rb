@@ -19,7 +19,7 @@ class MockClient
       })
     end
     OpenBankingConnector::AccountResponse.new(
-      transactions: Stubs.transactions,
+      transactions: transactions,
       balance: 500.00,
       currency: "EUR"
     )
@@ -37,7 +37,6 @@ class MockClient
             "remittanceInformationUnstructured" => "Pago en EL CORTE INGLES"
           })
         end
-        pp transactions
         transactions
       end
     end
