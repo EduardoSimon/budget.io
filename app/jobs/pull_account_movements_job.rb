@@ -4,7 +4,7 @@ class PullAccountMovementsJob < ApplicationJob
   def perform(account_id:)
     account = Account.find(account_id)
 
-    # TODO get the latest movement and its date to optimize
+    ## https://github.com/EduardoSimon/budget.io/issues/29
     result = OpenBankingConnector.new.fetch_movements(
       external_account_id: account.external_account_id
     )
