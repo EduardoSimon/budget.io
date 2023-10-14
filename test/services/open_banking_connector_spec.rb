@@ -6,6 +6,7 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
     setup do
       @client_mock = Minitest::Mock.new
       @client_mock.expect(:generate_token, "wadus")
+      @account_instance = create(:account, external_account_id: '1')
       freeze_time
     end
 
@@ -21,7 +22,7 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
 
       ::Nordigen::NordigenClient.stub(:new, @client_mock) do
         exception = assert_raises(StandardError) do |e|
-          OpenBankingConnector.new.fetch_movements(external_account_id: "1")
+          OpenBankingConnector.new.fetch_movements(account: @account_instance)
         end
 
         assert_equal exception.message, error.to_json
@@ -38,7 +39,7 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
       @client_mock.expect(:account, account_mock, ["1"])
 
       ::Nordigen::NordigenClient.stub(:new, @client_mock) do
-        response = OpenBankingConnector.new.fetch_movements(external_account_id: "1")
+        response = OpenBankingConnector.new.fetch_movements(account: @account_instance)
 
         assert_equal response.balance, 896.13
         assert_equal response.currency, "EUR"
