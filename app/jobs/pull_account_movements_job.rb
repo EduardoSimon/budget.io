@@ -14,8 +14,6 @@ class PullAccountMovementsJob < ApplicationJob
     reported_balance = Money.new((result.balance * 100).to_i, "EUR")
     account.update!(reported_balance: reported_balance)
 
-    test = 1
-
     result.transactions.each do |t|
       movement = Movement.find_by(external_id: t[:id])
       booking_date = Time.find_zone("UTC").parse(t[:date])

@@ -83,8 +83,6 @@ group :development do
   gem "capistrano3-puma", require: false
   gem "capistrano-bundler", require: false
   gem "capistrano-dotenv", "~> 0.0.5", require: false
-
-  gem "pre-commit", "~> 0.39", require: false
 end
 
 group :test do
