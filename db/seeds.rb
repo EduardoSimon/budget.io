@@ -24,9 +24,9 @@ AuthSession.create!(account: account,
   external_account_id: "48883f05-bfe1-46fb-818c-d272ace6a069",
   external_institution_id: "SANDBOXFINANCE_SFIN0000")
 
-food_category = Category.create!(name: "Food", budget: budget, target_amount_cents: 200_00)
-housing_category = Category.create!(name: "Housing", budget: budget, target_amount_cents: 0)
-cat_category = Category.create!(name: "Cat", budget: budget, target_amount_cents: 0)
+Category.create!(name: "Food", budget: budget, target_amount_cents: 200_00)
+Category.create!(name: "Housing", budget: budget, target_amount_cents: 0)
+Category.create!(name: "Cat", budget: budget, target_amount_cents: 0)
 
 def create_movement(amount:, date:, account:, description:, category: nil)
   Movement.create!(
