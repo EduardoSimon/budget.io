@@ -1,0 +1,11 @@
+repos:
+  - repo: local
+    hooks:
+      - id: standardrb
+        name: Check Ruby style with StandardRB
+        description: Enforce Ruby style guide with StandardRB
+        entry: bin/standardrb-wrapper.sh
+        language: script
+        types: ["ruby"]
+        stages: [commit]
+        verbose: true

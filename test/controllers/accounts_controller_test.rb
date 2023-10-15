@@ -36,7 +36,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update account" do
-    resopnse = patch account_url(@account), params: {account: {iban: @account.iban, name: @account.name}}
+    patch account_url(@account), params: {account: {iban: @account.iban, name: @account.name}}
     assert_redirected_to account_url(@account)
   end
 
