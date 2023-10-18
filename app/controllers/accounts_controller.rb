@@ -23,15 +23,6 @@ class AccountsController < ApplicationController
     PullAccountMovementsJob.perform_later(account_id: params[:account_id])
   end
 
-  def authentication_result
-    reference = params[:ref]
-
-    # Add the authenticated check to the account
-    # Add a common REF for all of the accounts
-    # Associate the account_id coming as part of the response to the account itself
-    # Use that account_id to fetch the rest of the details and save them
-  end
-
   # POST /accounts or /accounts.json
   def create
     @account = Account.new(account_params)

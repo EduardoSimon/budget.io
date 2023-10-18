@@ -18,8 +18,8 @@ class AccountTest < ActiveSupport::TestCase
       budget: @budget
     )
 
-    movement = Movement.create(account_id: account.id, payer: "payer", amount_cents: 100_00)
-    movement_2 = Movement.create(account_id: account.id, payer: "payer", amount_cents: -50_00)
+    Movement.create(account_id: account.id, payer: "payer", amount_cents: 100_00)
+    Movement.create(account_id: account.id, payer: "payer", amount_cents: -50_00)
 
     assert_equal account.balance.cents, 50_00
   end
