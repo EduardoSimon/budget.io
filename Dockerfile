@@ -1,6 +1,6 @@
 FROM ruby:3.1.0
 
-ENV APP_ROOT /usr/src/app
+ENV APP_ROOT /app
 WORKDIR ${APP_ROOT}
 
 COPY Gemfile* .

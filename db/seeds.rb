@@ -12,21 +12,30 @@ ENV["RAILS_ENV"] = "development"
 
 budget = Budget.create!(title: "Test budget")
 
-institution = Institution.create!(
-  institution_id: "04533925-cd07-473d-9b3b-f47a52184b14",
-  name: "Test institution"
-)
+institution = Institution.create!(name: "local institution",
+  institution_id: "local_institution_1",
+  thumbnail_url: "https://picsum.photos/200")
 
-account = Account.create!(name: "Test account",
-  institution: institution,
+account = Account.create!(name: "Unlinked account DO NOT SYNC",
   budget: budget,
   institution_id: institution.id,
   external_account_id: "48883f05-bfe1-46fb-818c-d272ace6a069")
 
+account_to_be_linked = Account.create!(name: "Account to be linked",
+  budget: budget,
+  institution_id: institution.id,
+  external_account_id: nil)
+
 AuthSession.create!(account: account,
   external_id: "707bbbe7-12e3-41e9-98f9-23277b1fb186",
   status: "success",
-  external_account_id: "48883f05-bfe1-46fb-818c-d272ace6a069",
+  external_account_id: "wadus",
+  external_institution_id: institution.institution_id)
+
+AuthSession.create!(account: account_to_be_linked,
+  external_id: "707bbbe7-12e3-41e9-98f9-23277b1",
+  status: "in_progress",
+  external_account_id: nil,
   external_institution_id: "SANDBOXFINANCE_SFIN0000")
 
 Category.create!(name: "Food", budget: budget, target_amount_cents: 200_00)

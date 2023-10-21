@@ -1,0 +1,41 @@
+version: '3'
+services:
+  web:
+    build: 
+      context: .
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_URL=postgres://postgres:password@db:5432
+    depends_on:
+      db:
+        condition: service_healthy 
+      bootstrap:
+        condition: service_completed_successfully
+    command: ["rails", "server", "-b", "0.0.0.0"]
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  bootstrap:
+    build: 
+      context: .
+    volumes:
+      - .:/app
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_URL=postgres://postgres:password@db:5432
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["bin/rails", "db:prepare"]
