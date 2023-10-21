@@ -25,6 +25,7 @@ test:
 
 .PHONY: lint
 lint:
+	$(DOCKER_BIN) $(TEST_DOCKER_FILES) up -d --build
 	$(DOCKER_BIN) exec web bundle exec rake factory_bot:lint
 	$(DOCKER_BIN) exec web bundle exec standardrb
 	
