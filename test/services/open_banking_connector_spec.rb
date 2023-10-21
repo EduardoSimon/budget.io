@@ -30,7 +30,7 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
       end
     end
 
-    test "When no moments are present, then returns the main balance of the given existent account as a float number, the currency and the transactions for last 4 months" do
+    test "When no movement is present, then returns the main balance of the given existent account as a float number, the currency and the transactions for last 4 months" do
       date_from = 4.months.ago.strftime('%F')
       date_to = @current_date
 
@@ -60,7 +60,7 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
       end
     end
 
-    test 'When moments are present, then returns the main balance of the given existent account as a float number, the currency and the transactions from last moment onwards' do
+    test 'When movement is present, then returns the main balance of the given existent account as a float number, the currency and the transactions from last moment onwards' do
       create(:movement, account_id: @account_instance.id, created_at: 2.days.ago)
       create(:movement, account_id: @account_instance.id, created_at: 1.days.ago)
       last_movement_date = @account_instance.movements.last.created_at.strftime('%F')
