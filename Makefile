@@ -28,6 +28,7 @@ clean:
 .PHONY: test
 test:
 	$(DOCKER_BIN) $(TEST_DOCKER_FILES) up -d --build
+	$(DOCKER_BIN) exec web bundle exec rake assets:precompile
 	$(DOCKER_BIN) exec -e RAILS_ENV=test web rails t
 	$(DOCKER_BIN) down
 
