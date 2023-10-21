@@ -23,5 +23,4 @@ namespace :institutions_data do
 
     puts "Successfully synced #{institutions.count} institutions"
   end
-
 end
