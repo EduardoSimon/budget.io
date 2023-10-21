@@ -13,21 +13,22 @@ Use a ruby dependency manager like rbenv or asdf. The supported ruby version is 
 
 ## Setup
 
-1. Install dependencies
-
-`bundle install`
-
-2. Install postgres
+1. Install postgres
 
 `brew install postgresql`
 
-3. Run postgres as a brew service
+2. Run postgres as a brew service
 
 `brew services start postgresql`
 
-4. Prepare dabatase
+3. Install Make
 
-`bin/rails db:create db:migrate db:seed`
+`brew install make`
+
+4. Prepare the development environment
+
+`make prepare`
+
 
 5. Run the server
 
