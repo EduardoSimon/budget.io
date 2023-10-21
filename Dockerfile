@@ -8,7 +8,5 @@ RUN bundle install
 
 COPY . ${APP_ROOT}
 
-RUN bundle exec rake assets:precompile
-
 ENTRYPOINT [ "./entrypoint" ]
 CMD [ "rails", "s" ]

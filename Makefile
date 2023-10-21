@@ -1,5 +1,13 @@
-TEST_DOCKER_FILES=-f docker-compose.yml -f docker-compose.test.yml
 DOCKER_BIN=docker compose
+
+# Check if the CI environment variable is set to "true"
+ifeq ($(CI),true)
+    # If CI=true, define a variable with a Compose file that has a CI override
+    TEST_DOCKER_FILES = -f docker-compose.yml -f docker-compose.ci.yml -f docker-compose.test.yml
+else
+    # If CI is not set to true or has a different value, use the normal Compose file
+		TEST_DOCKER_FILES=-f docker-compose.yml -f docker-compose.test.yml
+endif
 
 .PHONY: up
 up:
