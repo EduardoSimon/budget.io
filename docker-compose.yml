@@ -10,6 +10,8 @@ services:
     environment:
       - RAILS_ENV=development
       - DATABASE_URL=postgres://postgres:password@db:5432
+      - OB_CLIENT_ID
+      - OB_CLIENT_SECRET
     depends_on:
       db:
         condition: service_healthy 
@@ -35,6 +37,8 @@ services:
     environment:
       - RAILS_ENV=development
       - DATABASE_URL=postgres://postgres:password@db:5432
+      - OB_CLIENT_ID
+      - OB_CLIENT_SECRET
     depends_on:
       db:
         condition: service_healthy
