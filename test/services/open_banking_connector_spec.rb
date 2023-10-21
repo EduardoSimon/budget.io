@@ -6,8 +6,8 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
     setup do
       @client_mock = Minitest::Mock.new
       @client_mock.expect(:generate_token, "wadus")
-      @account_instance = create(:account, external_account_id: '1')
-      @current_date = DateTime.now.strftime('%F')
+      @account_instance = create(:account, external_account_id: "1")
+      @current_date = DateTime.now.strftime("%F")
       freeze_time
     end
 
@@ -31,7 +31,7 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
     end
 
     test "When no movement is present, then returns the main balance of the given existent account as a float number, the currency and the transactions for last 4 months" do
-      date_from = 4.months.ago.strftime('%F')
+      date_from = 4.months.ago.strftime("%F")
       date_to = @current_date
 
       balances_response = {"balances" => [{"balanceAmount" => {"amount" => "896.13", "currency" => "EUR"}, "balanceType" => "information", "lastChangeDateTime" => "2023-10-12T00:00:00Z"}, {"balanceAmount" => {"amount" => "935.37", "currency" => "EUR"}, "balanceType" => "interimBooked", "lastChangeDateTime" => "2023-10-12T00:00:00Z"}]}
@@ -60,10 +60,10 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
       end
     end
 
-    test 'When movement is present, then returns the main balance of the given existent account as a float number, the currency and the transactions from last moment onwards' do
+    test "When movement is present, then returns the main balance of the given existent account as a float number, the currency and the transactions from last moment onwards" do
       create(:movement, account_id: @account_instance.id, created_at: 2.days.ago)
       create(:movement, account_id: @account_instance.id, created_at: 1.days.ago)
-      last_movement_date = @account_instance.movements.last.created_at.strftime('%F')
+      last_movement_date = @account_instance.movements.last.created_at.strftime("%F")
 
       balances_response = {"balances" => [{"balanceAmount" => {"amount" => "896.13", "currency" => "EUR"}, "balanceType" => "information", "lastChangeDateTime" => "2023-10-12T00:00:00Z"}, {"balanceAmount" => {"amount" => "935.37", "currency" => "EUR"}, "balanceType" => "interimBooked", "lastChangeDateTime" => "2023-10-12T00:00:00Z"}]}
       account_mock = Minitest::Mock.new
@@ -89,7 +89,6 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
         assert_equal response.transactions.second[:date], "2023-07-24"
         assert_equal response.transactions.second[:description], "Pago en EL CORTE INGLES"
       end
-
     end
   end
 end
