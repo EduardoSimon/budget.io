@@ -6,7 +6,7 @@ class PullAccountMovementsJob < ApplicationJob
 
     ## https://github.com/EduardoSimon/budget.io/issues/29
     result = OpenBankingConnector.new.fetch_movements(
-      external_account_id: account.external_account_id
+      account: account
     )
 
     Rails.logger.info({balance: result.balance})
