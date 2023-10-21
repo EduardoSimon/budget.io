@@ -1,35 +1,73 @@
-.PHONY: prepare
-prepare:
-	bundle install #install dependencies
-	bundle exec rake assets:precompile # build Rails Asset pipeline
-	bundle exec rails db:prepare # create, migrate and seed database
+TEST_DOCKER_FILES=-f docker-compose.yml -f docker-compose.test.yml
+DOCKER_BIN=docker compose
 
 .PHONY: up
-up: prepare
-	bin/rails s
+up:
+	$(DOCKER_BIN) up --build
 
-.PHONY: console
-console:
+.PHONY: build
+build:
+	$(DOCKER_BIN) build
+
+.PHONY: down
+down:
+	$(DOCKER_BIN) $(TEST_DOCKER_FILES) down --remove-orphans --volumes
+
+.PHONY: clean
+clean:
+	$(DOCKER_BIN) $(TEST_DOCKER_FILES) down --remove-orphans --volumes --rmi all
+
+.PHONY: test
+test:
+	$(DOCKER_BIN) $(TEST_DOCKER_FILES) up -d --build
+	$(DOCKER_BIN) exec -e RAILS_ENV=test web rails t
+	$(DOCKER_BIN) down
+
+.PHONY: lint
+lint:
+	$(DOCKER_BIN) exec web bundle exec rake factory_bot:lint
+	$(DOCKER_BIN) exec web bundle exec standardrb
+	
+.PHONY: shell-dev
+shell-dev:
+	$(DOCKER_BIN) up -d --build
+	$(DOCKER_BIN) exec -it web /bin/bash
+
+.PHONY: shell-test
+shell-test:
+	$(DOCKER_BIN) $(TEST_DOCKER_FILES) up -d --build
+	$(DOCKER_BIN) exec -it -e RAILS_ENV=test web /bin/bash
+
+.PHONY: rails-console
+rails-console: up
+	$(DOCKER_BIN) exec web rails c
+
+.PHONY: ruby-prepare
+ruby-prepare:
+	bundle install
+	bundle exec rake assets:precompile
+	bundle exec rails db:prepare
+
+.PHONY: ruby-console
+ruby-console:
 	bin/rails c
 
-.PHONY: postgres
-postgres:
+.PHONY: ruby-postgres
+ruby-postgres:
 	psql -U 
 
-.PHONY: test_prepare
-test_prepare:
+.PHONY: ruby-test-prepare
+ruby-test-prepare:
 	bundle exec rake assets:precompile
 	bundle exec rails db:create
 	bundle exec rails db:migrate
 
 .PHONY: test
-test: test_prepare
+ruby-test: ruby-test-prepare
 	bin/rails t
 
-.PHONY: lint
-lint:
+.PHONY: ruby-lint
+ruby-lint:
 	bundle exec rake factory_bot:lint
 	bundle exec standardrb
-
-
 
