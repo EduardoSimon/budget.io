@@ -17,10 +17,7 @@ on:
 env:
   OB_CLIENT_ID: ${{ secrets.OB_CLIENT_ID }}
   OB_CLIENT_SECRET: ${{ secrets.OB_CLIENT_SECRET }}
-  DATABASE_URL: postgres://localhost:5432
   RAILS_ENV: test
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
 
 jobs:
   lint:
@@ -28,51 +25,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1.0"
-          bundler-cache: true
-
-      - name: Install deps
-        run: bundle install --retry 3
-
       - name: Check lint issues
-        run: bundle exec rake standard
+        run: make lint
   test:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:14.6
-        env:
-          POSTGRES_USER: ${{ env.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-        ports: ["5432:5432"]
-        options: --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1.0"
-          bundler-cache: true
-
-      - name: Install deps
-        run: bundle install --retry 3
-
-      - name: Prepare environment for running tests
-        run: make test_prepare
+      - name: Run tests in docker container
+        run: make test
         env:
           OB_CLIENT_ID: ${{ secrets.OB_CLIENT_ID }}
           OB_CLIENT_SECRET: ${{ secrets.OB_CLIENT_SECRET }}
-
-      - name: Lint project
-        run: make lint
-
-      - name: Run tests
-        run: make test
