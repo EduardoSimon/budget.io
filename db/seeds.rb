@@ -12,10 +12,15 @@ ENV["RAILS_ENV"] = "development"
 
 budget = Budget.create!(title: "Test budget")
 
+institution = Institution.create!(
+  institution_id: "04533925-cd07-473d-9b3b-f47a52184b14",
+  name: "Test institution"
+)
+
 account = Account.create!(name: "Test account",
-  institution: Institution.first,
+  institution: institution,
   budget: budget,
-  institution_id: Institution.first.id,
+  institution_id: institution.id,
   external_account_id: "48883f05-bfe1-46fb-818c-d272ace6a069")
 
 AuthSession.create!(account: account,
