@@ -1,7 +1,8 @@
 .PHONY: prepare
 prepare:
-	bundle exec rake assets:precompile
-	bundle exec rails db:create db:migrate db:seed
+	bundle install #install dependencies
+	bundle exec rake assets:precompile # build Rails Asset pipeline
+	bundle exec rails db:prepare # create, migrate and seed database
 
 .PHONY: up
 up: prepare
@@ -28,6 +29,7 @@ test: test_prepare
 .PHONY: lint
 lint:
 	bundle exec rake factory_bot:lint
+	bundle exec standardrb
 
 
 
