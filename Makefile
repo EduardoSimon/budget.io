@@ -29,6 +29,7 @@ test: test_prepare
 .PHONY: lint
 lint:
 	bundle exec rake factory_bot:lint
+	bundle exec standardrb
 
 
 
