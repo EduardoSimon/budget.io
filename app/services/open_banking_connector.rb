@@ -99,9 +99,9 @@ class OpenBankingConnector
 
   def get_transactions_response(external_account:, account:)
     last_movement_date = account
-                          .movements
-                          .order(:created_at)
-                          .last&.created_at
+      .movements
+      .order(:created_at)
+      .last&.created_at
 
     date_from = (last_movement_date || 4.months.ago).strftime("%F")
     date_to = Time.now.strftime("%F")
