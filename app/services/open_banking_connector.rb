@@ -33,10 +33,11 @@ class OpenBankingConnector
     AuthSession.new(id: id, url: response[:link], accounts: response[:accounts], status: :succeeded)
   end
 
-  def fetch_movements(external_account_id:)
-    account = client.account(external_account_id)
+  def fetch_movements(account:)
+    external_account_id = account.external_account_id
+    external_account = client.account(external_account_id)
 
-    balances_response = account.get_balances.deep_symbolize_keys
+    balances_response = external_account.get_balances.deep_symbolize_keys
 
     raise StandardError.new(balances_response.to_json) if balances_response[:status_code] && balances_response[:status_code] >= 400
 
@@ -54,14 +55,9 @@ class OpenBankingConnector
 
     raise StandardError.new({message: "balances object was empty", params: main_balance}) if main_balance.nil?
 
-    seconds_in_day = 60 * 60 * 24
-    previous_month = Time.now - (seconds_in_day * 30 * 4)
-    get_transactions_response = account.get_transactions(
-      date_from: previous_month.strftime("%F"),
-      date_to: Time.now.strftime("%F")
-    ).deep_symbolize_keys
+    transactions_response = get_transactions_response(external_account:, account:)
 
-    transactions = get_transactions_response[:transactions]
+    transactions = transactions_response[:transactions]
     raise StandardError.new({message: "No transactions object found"}) unless transactions
 
     booked_transactions = transactions[:booked]
@@ -99,5 +95,20 @@ class OpenBankingConnector
   def auth_token_invalid?
     return true if @token_response.nil?
     @token_response[:last_fetch_timestamp] + @token_response.dig(:token_response, :access_expires) <= Time.now.to_i
+  end
+
+  def get_transactions_response(external_account:, account:)
+    last_movement_date = account
+      .movements
+      .order(:created_at)
+      .last&.created_at
+
+    date_from = (last_movement_date || 4.months.ago).strftime("%F")
+    date_to = Time.now.strftime("%F")
+
+    external_account.get_transactions(
+      date_from:,
+      date_to:
+    ).deep_symbolize_keys
   end
 end
