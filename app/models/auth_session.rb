@@ -1,7 +1,10 @@
 class AuthSession < ApplicationRecord
   belongs_to :account
+
+  attr_accessor :skip_open_banking_session
+
   before_create :set_default_status
-  before_create :init_open_banking_provider_session
+  before_create :init_open_banking_provider_session, unless: :skip_open_banking_session
   serialize :raw_response, JsonbSerializer
 
   IN_PROGRESS_STATUS = "in_progress"
