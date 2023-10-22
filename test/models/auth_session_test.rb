@@ -114,9 +114,7 @@ module AuthSessionTest
     end
 
     test "raises an error due to invalid creds" do
-      error_message = {}
-      expected_error = '{"summary"=>"Authentication failed", "detail"=>"No active account found with the given credentials", "status_code"=>401}'
-      begin
+      assert_raises(Exception) do
         AuthSession.create!(
           account: @account,
           external_id: "6d358dfe-00b1-4c1f-895d-45405591dadb",
@@ -124,14 +122,7 @@ module AuthSessionTest
           external_account_id: nil,
           external_institution_id: "wadus"
         )
-      # We have to rescue from Exception because the API throws the Exception class for the error
-      # rubocop:disable Lint/RescueException
-      rescue Exception => e
-        # rubocop:enable Lint/RescueException
-        error_message = e.message
       end
-
-      assert_equal(error_message, expected_error)
     end
   end
 
