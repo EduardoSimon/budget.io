@@ -4,7 +4,25 @@ require_relative "../config/environment"
 
 if ENV["COVERAGE"] || ENV["CI"]
   require "simplecov"
-  SimpleCov.start "rails"
+  SimpleCov.start "rails" do
+    enable_coverage :branch
+    enable_coverage_for_eval
+
+    if ENV["CI"]
+      require "simplecov-cobertura"
+      formatter SimpleCov::Formatter::CoberturaFormatter
+    else
+      formatter SimpleCov::Formatter::MultiFormatter.new([
+        SimpleCov::Formatter::SimpleFormatter,
+        SimpleCov::Formatter::HTMLFormatter
+      ])
+    end
+  end
+
+  # We will increase eventually until something around 80/90%
+  SimpleCov.minimum_coverage 40
+  SimpleCov.refuse_coverage_drop
+
   Rails.application.eager_load!
 end
 
