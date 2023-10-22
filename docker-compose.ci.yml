@@ -2,9 +2,11 @@ version: '3'
 services:
   bootstrap:
     environment:
+      - CI
       - OB_CLIENT_ID
       - OB_CLIENT_SECRET
   web:
     environment:
+      - CI
       - OB_CLIENT_ID
       - OB_CLIENT_SECRET

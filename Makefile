@@ -32,6 +32,13 @@ test:
 	$(DOCKER_BIN) exec -e RAILS_ENV=test web rails t
 	$(DOCKER_BIN) down
 
+.PHONY: test-coverage
+test-coverage:
+	$(DOCKER_BIN) $(TEST_DOCKER_FILES) up -d --build
+	$(DOCKER_BIN) exec web bundle exec rake assets:precompile
+	$(DOCKER_BIN) exec -e RAILS_ENV=test -e COVERAGE=true web rails t
+	$(DOCKER_BIN) down
+
 .PHONY: lint
 lint:
 	$(DOCKER_BIN) $(TEST_DOCKER_FILES) up -d --build
