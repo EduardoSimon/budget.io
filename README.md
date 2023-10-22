@@ -1,5 +1,7 @@
 # README
 
+[![codecov](https://codecov.io/gh/EduardoSimon/budget.io/graph/badge.svg?token=35K8XB4LD1)](https://codecov.io/gh/EduardoSimon/budget.io)
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 

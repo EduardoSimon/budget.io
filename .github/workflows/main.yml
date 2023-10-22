@@ -37,3 +37,8 @@ jobs:
         env:
           OB_CLIENT_ID: ${{ secrets.OB_CLIENT_ID }}
           OB_CLIENT_SECRET: ${{ secrets.OB_CLIENT_SECRET }}
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
