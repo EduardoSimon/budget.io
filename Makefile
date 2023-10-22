@@ -81,3 +81,7 @@ ruby-lint:
 	bundle exec rake factory_bot:lint
 	bundle exec standardrb
 
+.PHONY: pg-shell
+pg-shell:
+	$(DOCKER_BIN) up --build -d
+	$(DOCKER_BIN) exec -it db psql -U postgres
