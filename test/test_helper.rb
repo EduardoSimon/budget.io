@@ -1,6 +1,15 @@
 ENV["RAILS_ENV"] ||= "test"
+
 require_relative "../config/environment"
+
+if ENV["COVERAGE"] || ENV["CI"]
+  require "simplecov"
+  SimpleCov.start "rails"
+  Rails.application.eager_load!
+end
+
 require "rails/test_help"
+
 require "minitest/autorun"
 
 class ActiveSupport::TestCase
