@@ -2,7 +2,7 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.4"
+gem "rails", "~> 7.1.1"
 
 # Loads automatically .env files
 gem "dotenv-rails", groups: [:development, :test, :production]
@@ -92,4 +92,6 @@ group :test do
   gem "webdrivers"
   gem "factory_bot", "~> 6.2"
   gem "factory_bot_rails", "~> 6.2"
+  gem "simplecov", require: false
+  gem "simplecov-cobertura", require: false
 end
