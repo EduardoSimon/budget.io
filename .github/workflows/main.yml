@@ -24,9 +24,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
 
       - name: Check lint issues
         run: make lint
+
+      - uses: docker/build-push-action@v5
+        with:
+          context: .
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
   test:
     runs-on: ubuntu-latest
     steps:
