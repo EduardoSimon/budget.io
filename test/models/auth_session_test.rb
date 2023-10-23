@@ -114,14 +114,19 @@ module AuthSessionTest
     end
 
     test "raises an error due to invalid creds" do
-      assert_raises(Exception) do
-        AuthSession.create!(
-          account: @account,
-          external_id: "6d358dfe-00b1-4c1f-895d-45405591dadb",
-          status: "in_progress",
-          external_account_id: nil,
-          external_institution_id: "wadus"
-        )
+      expected_error = '{"summary"=>"Authentication failed", "detail"=>"No active account found with the given credentials", "status_code"=>401}'
+      @connector_mock.expect(:init_auth_session, nil) { raise(StandardError, expected_error) }
+
+      assert_raises(StandardError, expected_error) do
+        subject(use_mock: true) do
+          AuthSession.create!(
+            account: @account,
+            external_id: "6d358dfe-00b1-4c1f-895d-45405591dadb",
+            status: "in_progress",
+            external_account_id: nil,
+            external_institution_id: "wadus"
+          )
+        end
       end
     end
   end
