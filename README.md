@@ -35,6 +35,8 @@ Use a ruby dependency manager like rbenv or asdf. The supported ruby version is 
 
 `bin/rails s`
 
+**Note:** It's important to create a `.env.development.local` file and add your valid GoCardless credentials as per `.env` format to fully leverage the application's functionalities. To learn more about `.env` files, please read [this](https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use).
+
 ## Useful Tasks
 1.  Sync the Institutions from GoCardless
 
