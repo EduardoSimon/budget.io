@@ -21,4 +21,4 @@ coverage:
 # Diff is the Coverage Diff of the pull request.
 # Files are the files impacted by the pull request
 comment:
-  layout: diff, files # accepted in any order: reach, diff, flags, and/or files
+  layout: diff, files, flags # accepted in any order: reach, diff, flags, and/or files
