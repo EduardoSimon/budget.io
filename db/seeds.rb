@@ -30,13 +30,15 @@ AuthSession.create!(account: account,
   external_id: "707bbbe7-12e3-41e9-98f9-23277b1fb186",
   status: "success",
   external_account_id: "wadus",
-  external_institution_id: institution.institution_id)
+  external_institution_id: institution.institution_id,
+  skip_open_banking_session: true)
 
 AuthSession.create!(account: account_to_be_linked,
   external_id: "707bbbe7-12e3-41e9-98f9-23277b1",
   status: "in_progress",
   external_account_id: nil,
-  external_institution_id: "SANDBOXFINANCE_SFIN0000")
+  external_institution_id: "SANDBOXFINANCE_SFIN0000",
+  skip_open_banking_session: true)
 
 Category.create!(name: "Food", budget: budget, target_amount_cents: 200_00)
 Category.create!(name: "Housing", budget: budget, target_amount_cents: 0)

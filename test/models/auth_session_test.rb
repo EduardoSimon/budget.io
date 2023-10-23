@@ -112,6 +112,23 @@ module AuthSessionTest
 
       @connector_mock.verify
     end
+
+    test "raises an error due to invalid creds" do
+      expected_error = '{"summary"=>"Authentication failed", "detail"=>"No active account found with the given credentials", "status_code"=>401}'
+      @connector_mock.expect(:init_auth_session, nil) { raise(StandardError, expected_error) }
+
+      assert_raises(StandardError, expected_error) do
+        subject(use_mock: true) do
+          AuthSession.create!(
+            account: @account,
+            external_id: "6d358dfe-00b1-4c1f-895d-45405591dadb",
+            status: "in_progress",
+            external_account_id: nil,
+            external_institution_id: "wadus"
+          )
+        end
+      end
+    end
   end
 
   class ModelParamsTest < SharedContext
@@ -183,6 +200,19 @@ module AuthSessionTest
       assert_equal(@result.id, @session.external_id)
       assert_equal("SANDBOXFINANCE_SFIN0000", @session.external_institution_id)
       assert_equal(@result.response, @session.raw_response)
+    end
+
+    test "creates auth session without calling open banking init session API" do
+      assert_silent do
+        AuthSession.create!(
+          account: @account,
+          external_id: "6d358dfe-00b1-4c1f-895d-45405591dadb",
+          status: "in_progress",
+          external_account_id: nil,
+          external_institution_id: "wadus",
+          skip_open_banking_session: true
+        )
+      end
     end
   end
 end
