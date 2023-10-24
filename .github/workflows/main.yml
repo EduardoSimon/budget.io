@@ -10,8 +10,10 @@
 name: Ruby
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
+    tags: [ "v*.*.*" ]
   pull_request:
     branches: [main]
 env:
@@ -66,6 +68,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Run tests in docker container
         run: make test
