@@ -258,7 +258,7 @@ GEM
     rake (13.0.6)
     rdoc (6.5.0)
       psych (>= 4.0.0)
-    regexp_parser (2.8.1)
+    regexp_parser (2.8.2)
     reline (0.3.9)
       io-console (~> 0.5)
     rexml (3.2.6)
@@ -305,18 +305,18 @@ GEM
     sshkit (1.21.5)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    standard (1.31.1)
+    standard (1.31.2)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
-      rubocop (~> 1.56.2)
+      rubocop (~> 1.56.4)
       standard-custom (~> 1.0.0)
       standard-performance (~> 1.2)
     standard-custom (1.0.2)
       lint_roller (~> 1.0)
       rubocop (~> 1.50)
-    standard-performance (1.2.0)
+    standard-performance (1.2.1)
       lint_roller (~> 1.1)
-      rubocop-performance (~> 1.19.0)
+      rubocop-performance (~> 1.19.1)
     stimulus-rails (1.2.2)
       railties (>= 6.0.0)
     stringio (3.0.8)
@@ -390,7 +390,7 @@ DEPENDENCIES
   simplecov
   simplecov-cobertura
   sprockets-rails
-  standard (~> 1.24)
+  standard (~> 1.31)
   stimulus-rails
   tailwindcss-rails (~> 2.0)
   turbo-rails
