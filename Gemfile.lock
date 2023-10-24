@@ -86,7 +86,7 @@ GEM
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
-    capistrano (3.17.3)
+    capistrano (3.18.0)
       airbrussh (>= 1.0.0)
       i18n
       rake (>= 10.0.0)
@@ -364,7 +364,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt_pbkdf
   bootsnap
-  capistrano (~> 3.17)
+  capistrano (~> 3.18)
   capistrano-bundler
   capistrano-dotenv (~> 0.0.5)
   capistrano-rails (~> 1.6)
