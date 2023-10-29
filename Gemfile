@@ -75,7 +75,7 @@ group :development do
   gem "rake"
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-  gem "capistrano", "~> 3.17", require: false
+  gem "capistrano", "~> 3.18", require: false
   gem "capistrano-rails", "~> 1.6", require: false
   gem "ed25519", require: false
   gem "bcrypt_pbkdf", require: false
