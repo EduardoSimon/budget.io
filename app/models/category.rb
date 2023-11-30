@@ -10,6 +10,8 @@ class Category < ApplicationRecord
   end
 
   def funded?(current_month)
+    return false if overspent?(current_month)
+
     assigned_amount_in(current_month).cents >= target_amount_cents
   end
 

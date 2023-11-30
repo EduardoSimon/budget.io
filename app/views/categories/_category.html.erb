@@ -30,16 +30,28 @@
   </div>
   <div class="flex items-center">
     <div class="flex-1">
-      <div class="z-10 mb-3 rounded-full <%= category.funded?(@current_month) ? "bg-caper-400" : "bg-gray-400" %>">
-        <% bar_class_name = ""  %>
+
+      <% base_bar_class = ""  %>
+      <% if category.fully_spent?(@current_month) || category.in_spending?(@current_month)  %>
+        <% base_bar_class = "bg-caper-400"  %>
+      <% elsif category.overspent?(@current_month) %>
+        <% base_bar_class = "bg-new-york-pink-300"  %>
+      <% else %>
+        <% base_bar_class = "bg-gray-400" %>
+      <% end %>
+
+      <div class="z-10 mb-3 rounded-full <%= base_bar_class %>">
+
+        <% spend_bar_class = ""  %>
         <% if category.fully_spent?(@current_month) %>
-          <% bar_class_name = "bg-green-light-striped-pattern"  %>
+          <% spend_bar_class = "bg-green-light-striped-pattern"  %>
         <% elsif category.spent_amount_in_month(@current_month) > 0 && !category.overspent?(@current_month) %>
-          <% bar_class_name = "bg-green-striped-pattern"  %>
+          <% spend_bar_class = "bg-green-striped-pattern"  %>
         <% elsif category.overspent?(@current_month) %>
-          <% bar_class_name = "bg-new-york-pink-300"  %>
+          <% spend_bar_class = "bg-new-york-pink-300"  %>
         <% end %>
-        <div class="z-0 bg-gray-200 text-center h-2 rounded-full <%= bar_class_name %>"
+
+        <div class="z-0 bg-gray-200 text-center h-2 rounded-full <%= spend_bar_class %>"
              style="width: <%= category.spent_percentage_in_month(@current_month).clamp(0.0,100.0) %>%">
         </div>
       </div>

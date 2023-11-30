@@ -58,6 +58,17 @@ class CategoryTest < ActiveSupport::TestCase
     assert_equal(@category.funded?(beginning_of_month), false)
   end
 
+  test "funded? returns false when the category is overspent" do
+    movement_date = Time.now.utc
+    beginning_of_month = movement_date.beginning_of_month
+
+    Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
+    Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(10000, "EUR"))
+
+    assert_equal(@category.funded?(beginning_of_month), false)
+  end
+
   test "overspent? returns true when the spent amount is GREATER than the assigned amount in a month" do
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
