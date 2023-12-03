@@ -5,7 +5,13 @@ class Category < ApplicationRecord
   monetize :target_amount_cents
   belongs_to :budget
 
+  def pristine?(current_month)
+    spent_amount_cents_in_month(current_month) == 0 && assigned_amount_in(current_month) == 0
+  end
+
   def fully_spent?(current_month)
+    return false if spent_amount_cents_in_month(current_month) == 0 && assigned_amount_in(current_month) == 0
+
     spent_amount_cents_in_month(current_month) == assigned_amount_in(current_month).cents
   end
 
