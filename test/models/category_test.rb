@@ -69,12 +69,14 @@ class CategoryTest < ActiveSupport::TestCase
     assert_equal(@category.funded?(beginning_of_month), false)
   end
 
-  test "overspent? returns true when the spent amount is GREATER than the assigned amount in a month" do
+  test "overspent? returns true when the spent amount is GREATER than the assigned amount up to this month" do
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
+    beginning_of_prev_month = movement_date.prev_month.beginning_of_month
+    end_of_prev_month = movement_date.prev_month.end_of_month
 
-    Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
+    Movement.create!(payer: "payer_2", amount_cents: -20000, account: @account, category: @category, created_at: movement_date)
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_prev_month, end_date: end_of_prev_month, amount: Money.new(5000, "EUR"))
     MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(10000, "EUR"))
 
     assert_equal(@category.overspent?(beginning_of_month), true)
@@ -102,7 +104,20 @@ class CategoryTest < ActiveSupport::TestCase
     assert_equal(@category.overspent?(beginning_of_month), false)
   end
 
-  test "overspent? returns false when the target_amount is 0 and the assignment is 0 and activity is greater than 0" do
+  test "overspent? returns false when the target_amount is 0 and the assignment is 0 and activity is 0 and available to spend in month is over 0" do
+    movement_date = Time.now.utc
+    beginning_of_month = movement_date.beginning_of_month
+    beginning_of_prev_month = movement_date.prev_month.beginning_of_month
+    end_of_prev_month = movement_date.prev_month.end_of_month
+
+    @category.update!(target_amount_cents: 0)
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_prev_month, end_date: end_of_prev_month, amount: Money.new(2000, "EUR"))
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(0, "EUR"))
+
+    assert_equal(@category.overspent?(beginning_of_month), false)
+  end
+
+  test "overspent? returns false when the target_amount is 0 and the assignment is 0 and activity is 0 and available to spend in month is 0" do
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 

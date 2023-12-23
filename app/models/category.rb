@@ -18,15 +18,15 @@ class Category < ApplicationRecord
   def funded?(current_month)
     return false if overspent?(current_month)
 
-    assigned_amount_in(current_month).cents >= target_amount_cents
+    assigned_amount_in(current_month).cents >= spent_amount_cents_in_month(current_month)
   end
 
   def overspent?(current_month)
     assigned_amount_in_month = assigned_amount_in(current_month).cents
 
-    return false if target_amount_cents == 0 && assigned_amount_in_month == 0 && spent_amount_cents_in_month(current_month) == 0
+    return false if target_amount_cents == 0 && assigned_amount_in_month == 0 && spent_amount_cents_in_month(current_month) == 0 && available_to_spend_in(current_month).cents >= 0
 
-    spent_amount_cents > assigned_amount_in(current_month).cents
+    spent_amount_cents > assigned_amount_cents
   end
 
   def available_to_spend_in(current_month)
@@ -66,6 +66,10 @@ class Category < ApplicationRecord
 
   def spent_amount_cents
     movements.sum(:amount_cents) * -1 || 0
+  end
+
+  def assigned_amount_cents
+    monthly_assignments.sum(:amount_cents) || 0
   end
 
   def assignment_for_month(month_date)
