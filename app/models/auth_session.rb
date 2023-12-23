@@ -5,7 +5,7 @@ class AuthSession < ApplicationRecord
 
   before_create :set_default_status
   before_create :init_open_banking_provider_session, unless: :skip_open_banking_session
-  serialize :raw_response, JsonbSerializer
+  serialize :raw_response, coder: JsonbSerializer
 
   IN_PROGRESS_STATUS = "in_progress"
   FAILED_STATUS = "failed"
