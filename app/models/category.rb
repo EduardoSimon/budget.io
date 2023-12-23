@@ -40,6 +40,8 @@ class Category < ApplicationRecord
   end
 
   def spent_percentage_in_month(month_date)
+    return 100.00 if overspent?(month_date)
+
     assigned_amount_in_month_cents = assigned_amount_in(month_date).cents.to_f
     return assigned_amount_in_month_cents if assigned_amount_in_month_cents.zero?
 

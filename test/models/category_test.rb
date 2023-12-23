@@ -134,15 +134,23 @@ class CategoryTest < ActiveSupport::TestCase
     assert_equal(@category.spent_percentage_in_month(beginning_of_month), (20000.to_f / 30000.to_f) * 100)
   end
 
-  test "spent_percentage returns 0 when the assigned amount is 0" do
+  test "spent_percentage returns 0 when the assigned amount is 0 and its not overspent" do
+    movement_date = Time.now.utc
+    beginning_of_month = movement_date.beginning_of_month
+
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(0, "EUR"))
+
+    assert_equal(@category.spent_percentage_in_month(beginning_of_month), 0.0)
+  end
+
+  test "spent_percentage returns 100 when overspent" do
     movement_date = Time.now.utc
     beginning_of_month = movement_date.beginning_of_month
 
     Movement.create!(payer: "payer_1", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    Movement.create!(payer: "payer_2", amount_cents: -10000, account: @account, category: @category, created_at: movement_date)
-    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(0, "EUR"))
+    MonthlyAssignment.create!(category: @category, start_date: beginning_of_month, end_date: beginning_of_month.next_month, amount: Money.new(5000, "EUR"))
 
-    assert_equal(@category.spent_percentage_in_month(beginning_of_month), 0.0)
+    assert_equal(@category.spent_percentage_in_month(beginning_of_month), 100.0)
   end
 
   test "in_spending? returns true when spent_percentage is GREATER than 0%" do
