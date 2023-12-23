@@ -5,20 +5,28 @@ class Category < ApplicationRecord
   monetize :target_amount_cents
   belongs_to :budget
 
+  def pristine?(current_month)
+    spent_amount_cents_in_month(current_month) == 0 && assigned_amount_in(current_month) == 0
+  end
+
   def fully_spent?(current_month)
+    return false if spent_amount_cents_in_month(current_month) == 0 && assigned_amount_in(current_month) == 0
+
     spent_amount_cents_in_month(current_month) == assigned_amount_in(current_month).cents
   end
 
   def funded?(current_month)
-    assigned_amount_in(current_month).cents >= target_amount_cents
+    return false if overspent?(current_month)
+
+    assigned_amount_in(current_month).cents >= spent_amount_cents_in_month(current_month)
   end
 
   def overspent?(current_month)
     assigned_amount_in_month = assigned_amount_in(current_month).cents
 
-    return false if target_amount_cents == 0 && assigned_amount_in_month == 0 && spent_amount_cents_in_month(current_month) == 0
+    return false if target_amount_cents == 0 && assigned_amount_in_month == 0 && spent_amount_cents_in_month(current_month) == 0 && available_to_spend_in(current_month).cents >= 0
 
-    spent_amount_cents > assigned_amount_in(current_month).cents
+    spent_amount_cents > assigned_amount_cents
   end
 
   def available_to_spend_in(current_month)
@@ -32,6 +40,8 @@ class Category < ApplicationRecord
   end
 
   def spent_percentage_in_month(month_date)
+    return 100.00 if overspent?(month_date)
+
     assigned_amount_in_month_cents = assigned_amount_in(month_date).cents.to_f
     return assigned_amount_in_month_cents if assigned_amount_in_month_cents.zero?
 
@@ -56,6 +66,10 @@ class Category < ApplicationRecord
 
   def spent_amount_cents
     movements.sum(:amount_cents) * -1 || 0
+  end
+
+  def assigned_amount_cents
+    monthly_assignments.sum(:amount_cents) || 0
   end
 
   def assignment_for_month(month_date)
