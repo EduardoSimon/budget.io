@@ -33,7 +33,9 @@
     <div class="flex-1">
 
       <% base_bar_class = ""  %>
-      <% if category.fully_spent?(@current_month) || category.in_spending?(@current_month)  %>
+      <% if category.pristine?(@current_month) %>
+        <% base_bar_class = "bg-gray-200" %>
+      <% elsif category.fully_spent?(@current_month) || category.in_spending?(@current_month) || category.funded?(@current_month) %>
         <% base_bar_class = "bg-caper-400"  %>
       <% elsif category.overspent?(@current_month) %>
         <% base_bar_class = "bg-new-york-pink-300"  %>
