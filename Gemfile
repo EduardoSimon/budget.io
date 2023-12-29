@@ -90,8 +90,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
-  gem "factory_bot", "~> 6.2"
-  gem "factory_bot_rails", "~> 6.2"
+  gem "factory_bot", "~> 6.4"
+  gem "factory_bot_rails", "~> 6.4"
   gem "simplecov", require: false
   gem "simplecov-cobertura", require: false
 end
