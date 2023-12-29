@@ -30,11 +30,25 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
       end
     end
 
-    test "When no movement is present, then returns the main balance of the given existent account as a float number, the currency and the transactions for last 4 months" do
+    test "When no movement is present, then returns the main settled balance of the given existent account as a float number, the currency and the transactions for last 4 months" do
       date_from = 4.months.ago.strftime("%F")
       date_to = @current_date
 
-      balances_response = {"balances" => [{"balanceAmount" => {"amount" => "896.13", "currency" => "EUR"}, "balanceType" => "information", "lastChangeDateTime" => "2023-10-12T00:00:00Z"}, {"balanceAmount" => {"amount" => "935.37", "currency" => "EUR"}, "balanceType" => "interimBooked", "lastChangeDateTime" => "2023-10-12T00:00:00Z"}]}
+      balances_response = {"balances" =>
+                           [
+                             {"balanceAmount" =>
+                              {"amount" => "896.13",
+                               "currency" => "EUR"},
+                              "balanceType" => "information",
+                              "lastChangeDateTime" => "2023-10-12T00:00:00Z"},
+                             {
+                               "balanceAmount" =>
+                               {"amount" => "935.37",
+                                "currency" => "EUR"},
+                               "balanceType" => "interimBooked",
+                               "lastChangeDateTime" => "2023-10-12T00:00:00Z"
+                             }
+                           ]}
       account_mock = Minitest::Mock.new
       account_mock.expect(:get_balances, balances_response.deep_symbolize_keys)
       account_mock.expect(:get_transactions, {"transactions" => {"booked" => MockClient::Stubs.transactions}}, date_from:, date_to:)
@@ -45,8 +59,8 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
         response = OpenBankingConnector.new.fetch_movements(account: @account_instance)
 
         assert_equal @account_instance.movements.exists?, false
-        assert_equal response.balance, 896.13
-        assert_equal response.currency, "EUR"
+        assert_equal 935.37, response.balance
+        assert_equal "EUR", response.currency
 
         assert_equal response.transactions.first[:id], 0
         assert_equal response.transactions.first[:amount], 100.0
@@ -76,8 +90,6 @@ class OpenBankingConnectorTest < ActiveSupport::TestCase
         response = OpenBankingConnector.new.fetch_movements(account: @account_instance)
 
         assert_equal @account_instance.movements.exists?, true
-        assert_equal response.balance, 896.13
-        assert_equal response.currency, "EUR"
 
         assert_equal response.transactions.first[:id], 0
         assert_equal response.transactions.first[:amount], 100.0

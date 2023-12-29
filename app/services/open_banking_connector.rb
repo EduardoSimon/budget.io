@@ -51,9 +51,11 @@ class OpenBankingConnector
 
     raise StandardError.new("balances object is nil in account") if balances.nil?
 
-    main_balance = balances.first[:balanceAmount]
+    main_balance = settled_amount_from(balances)
 
-    raise StandardError.new({message: "balances object was empty", params: main_balance}) if main_balance.nil?
+    Rails.logger.info({balances:})
+
+    raise StandardError.new({message: "balances object was empty", params: balances}) if main_balance.nil?
 
     transactions_response = get_transactions_response(external_account:, account:)
 
@@ -74,6 +76,12 @@ class OpenBankingConnector
     end
 
     AccountResponse.new(transactions: transactions, balance: main_balance[:amount].to_f, currency: main_balance[:currency])
+  end
+
+  SETTLED_BALANCE_TYPES = ["interimBooked"]
+
+  def settled_amount_from(balances)
+    balances.find { |b| SETTLED_BALANCE_TYPES.include?(b[:balanceType]) }[:balanceAmount]
   end
 
   def client
