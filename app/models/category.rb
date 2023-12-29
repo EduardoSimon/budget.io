@@ -65,7 +65,15 @@ class Category < ApplicationRecord
   end
 
   def spent_amount_cents
-    movements.sum(:amount_cents) * -1 || 0
+    @spent_amount_cents ||= movements.sum(:amount_cents) * -1 || 0
+
+    @spent_amount_cents
+  end
+
+  def assigned_amount_cents
+    @assigned_amount_cents ||= monthly_assignments.sum(:amount_cents) || 0
+
+    @assigned_amount_cents
   end
 
   def assigned_amount_cents
