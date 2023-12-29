@@ -71,12 +71,6 @@ class Category < ApplicationRecord
   end
 
   def assigned_amount_cents
-    @assigned_amount_cents ||= monthly_assignments.sum(:amount_cents) || 0
-
-    @assigned_amount_cents
-  end
-
-  def assigned_amount_cents
     monthly_assignments.sum(:amount_cents) || 0
   end
 
