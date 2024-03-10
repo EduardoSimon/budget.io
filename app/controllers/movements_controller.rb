@@ -48,7 +48,7 @@ class MovementsController < ApplicationController
   end
 
   def redirect_destination
-    return budget_url(@account.budget, date: {month: selected_month}) if selected_month
+    return budget_url(@account.budget, date: {month: selected_month, year: selected_year}) if selected_month
     account_url(@movement.account)
   end
 
@@ -56,6 +56,12 @@ class MovementsController < ApplicationController
     return nil if params.dig(:movement, :date).nil?
 
     DateTime.strptime(params[:movement][:date], "%F").month
+  end
+
+  def selected_year
+    return nil if params.dig(:movement, :date).nil?
+
+    DateTime.strptime(params[:movement][:date], "%F").year
   end
 
   def set_movement
