@@ -2,13 +2,21 @@ class Account < ApplicationRecord
   belongs_to :institution
   belongs_to :budget
   has_many :movements, dependent: :destroy
-  has_many :auth_sessions, dependent: :destroy
+  has_many :auth_sessions, -> { order(created_at: :desc) }, dependent: :destroy
   monetize :reported_balance_cents
 
+  # https://developer.gocardless.com/bank-account-data/statuses
+  AUTHENTICATED_STATUS = "LN".freeze
+
   def authenticated?
-    ## TODO improve logic here to check status of current agreement
-    ## https://github.com/EduardoSimon/budget.io/issues/25
-    external_account_id.present?
+    return false unless external_account_id.present?
+
+    requisition_id = auth_sessions&.first&.external_id
+    return false unless requisition_id.present?
+
+    requisition = OpenBankingConnector.new.fetch_requisition(requisition_id)
+
+    requisition[:status] == AUTHENTICATED_STATUS
   end
 
   def balance

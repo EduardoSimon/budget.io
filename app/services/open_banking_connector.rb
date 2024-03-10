@@ -11,6 +11,10 @@ class OpenBankingConnector
     client.institution.get_institutions(country).map(&:deep_symbolize_keys)
   end
 
+  def fetch_requisition(id)
+    client.requisition.get_requisition_by_id(id).deep_symbolize_keys
+  end
+
   def init_auth_session(institution_id:, internal_user_id:, redirect_url:)
     # TODO {:summary=>"Authentication failed", :detail=>"Authentication credentials were not provided.", :status_code=>401}
     session_response = client.init_session(
