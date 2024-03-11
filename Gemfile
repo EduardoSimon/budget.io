@@ -31,7 +31,7 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
-gem "nordigen-ruby", "~> 2.1"
+gem "nordigen-ruby", "~> 2.2"
 
 gem "money-rails", "~>1.12"
 
