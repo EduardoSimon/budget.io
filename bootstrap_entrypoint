@@ -1,0 +1,4 @@
+#! /bin/sh
+bundle exec rake assets:precompile
+bundle exec rails db:prepare
+exec $@

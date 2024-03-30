@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    build: 
+    build:
       context: .
     volumes:
       - .:/app
@@ -12,10 +12,10 @@ services:
       - DATABASE_URL=postgres://postgres:password@db:5432
     depends_on:
       db:
-        condition: service_healthy 
+        condition: service_healthy
       bootstrap:
         condition: service_completed_successfully
-    command: ["rails", "server", "-b", "0.0.0.0"]
+    command: [ "rails", "server", "-b", "0.0.0.0" ]
 
   db:
     image: postgres:latest
@@ -23,12 +23,12 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
   bootstrap:
-    build: 
+    build:
       context: .
     volumes:
       - .:/app
@@ -38,4 +38,4 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: ["bin/rails", "db:prepare"]
+    entrypoint: ./bootstrap_entrypoint
