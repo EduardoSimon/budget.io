@@ -56,7 +56,7 @@ shell-test:
 	$(DOCKER_BIN) exec -it -e RAILS_ENV=test web /bin/bash
 
 .PHONY: rails-console
-rails-console: up
+rails-console: 
 	$(DOCKER_BIN) exec web rails c
 
 .PHONY: ruby-prepare
@@ -90,5 +90,13 @@ ruby-lint:
 
 .PHONY: pg-shell
 pg-shell:
-	$(DOCKER_BIN) up --build -d
-	$(DOCKER_BIN) exec -it db psql -U postgres
+	$(DOCKER_BIN) exec -it db psql -U postgres -d budget-io-dev --
+
+.PHONY: pg-bash
+pg-bash:
+	$(DOCKER_BIN) exec -it db /bin/bash  --
+
+.PHONY: up-production
+up-production:
+	$(DOCKER_BIN) --env-file ./.env.production.local up --build
+

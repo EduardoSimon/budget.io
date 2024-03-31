@@ -1,4 +1,5 @@
 #! /bin/sh
+echo "Running bootstrapping in environment: ${RAILS_ENV}"
 bundle exec rake assets:precompile
 bundle exec rails db:prepare
 exec $@

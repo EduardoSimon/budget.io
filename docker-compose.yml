@@ -8,8 +8,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - RAILS_ENV=development
-      - DATABASE_URL=postgres://postgres:password@db:5432
+      - DATABASE_URL
+      - RAILS_ENV
+      - OB_CLIENT_ID
+      - OB_CLIENT_SECRET
     depends_on:
       db:
         condition: service_healthy
@@ -27,14 +29,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    volumes:
+      - .:/usr/src/app
+      - ./postgres-data:/var/lib/postgresql/data
+
   bootstrap:
     build:
       context: .
     volumes:
       - .:/app
     environment:
-      - RAILS_ENV=development
-      - DATABASE_URL=postgres://postgres:password@db:5432
+      - DATABASE_URL
+      - RAILS_ENV
+      - OB_CLIENT_ID
+      - OB_CLIENT_SECRET
     depends_on:
       db:
         condition: service_healthy
