@@ -37,7 +37,7 @@ gem "money-rails", "~>1.12"
 
 gem "monetize", "~> 1.12"
 
-gem "tailwindcss-rails", "~> 2.1"
+gem "tailwindcss-rails", "~> 2.4"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
